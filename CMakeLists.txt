@@ -3,4 +3,10 @@ project(itapk_exam)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(itapk_exam main.cpp src/Sensor.cpp include/Sensor.h)
+find_package( Threads )
+
+add_executable(itapk_exam main.cpp src/Sensor.cpp include/Sensor.h include/sensors/Imu.h)
+
+target_link_libraries(itapk_exam ${CMAKE_THREAD_LIBS_INIT})
+
+target_include_directories(itapk_exam PRIVATE include include/sensors )
