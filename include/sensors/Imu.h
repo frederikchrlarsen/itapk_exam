@@ -11,6 +11,7 @@
 #ifndef ITAPK_EXAM_IMU_H
 #define ITAPK_EXAM_IMU_H
 
+namespace apk{
 
 template <class T>
 class Imu: public apk::Sensor<T> {
@@ -60,5 +61,5 @@ private:
 
 };
 
-
+}
 #endif //ITAPK_EXAM_IMU_H
