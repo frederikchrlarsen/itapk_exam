@@ -26,8 +26,6 @@ public:
         return "Imu test";
     }
 
-
-
     void connect() {
 
         std::thread thread_data_gen(&Imu::data_generator, this);
@@ -51,7 +49,6 @@ public:
         //disconnected = true;
         disconnected = true;
     }
-
 
 private:
     bool disconnected = false;

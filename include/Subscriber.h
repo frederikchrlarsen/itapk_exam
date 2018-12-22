@@ -13,7 +13,6 @@
 
 namespace apk{
 
-template<class T>
 class Subscriber{
 
 public:

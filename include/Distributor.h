@@ -21,7 +21,7 @@ public:
     }
 
 private:
-    std::list<apk::Sensor*> sensor;
+    std::list<apk::Sensor<int>*> sensor;
 
     std::list<apk::Subscriber*> subscriber;
 
