@@ -21,6 +21,6 @@ add_executable(itapk_exam
         include/Distributor.h
         include/Subscriber.h)
 
-target_link_libraries(itapk_exam ${CMAKE_THREAD_LIBS_INIT} ${Boost_LIBRARIES})
+target_link_libraries(itapk_exam ${CMAKE_THREAD_LIBS_INIT} ${Boost_LIBRARIES} bcrypt.lib)
 
 target_include_directories(itapk_exam PRIVATE include include/sensors)

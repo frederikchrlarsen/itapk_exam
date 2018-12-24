@@ -8,7 +8,7 @@
 int main() {
 
 
-    apk::Subscriber<int> sub;
+    apk::Subscriber sub;
     sub.test();
 
     // Callback function as a lambda expression for now
