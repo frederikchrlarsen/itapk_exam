@@ -19,7 +19,9 @@ add_executable(itapk_exam
         include/Sensor.h
         include/sensors/Imu.h
         include/Distributor.h
-        include/Subscriber.h)
+        include/Subscriber.h
+        include/units.h
+        )
 
 
 
