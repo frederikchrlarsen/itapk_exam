@@ -20,19 +20,20 @@ public:
     Length(long double length, Length::unit unit){
         switch (unit) {
             case CM:
-                length_m = length/100;
+                length_m = length/100.0;
                 break;
             case METER:
                 length_m = length;
                 break;
             case KILOMETERS:
-                length_m = length*1000;
+                length_m = length*1000.0;
                 break;
             case MILES:
                 length_m = length*milesToMeterFactor;
                 break;
         }
     }
+
     Length(unsigned long long length, Length::unit unit) {
         switch (unit) {
             case CM:
@@ -51,7 +52,7 @@ public:
     }
 
     long double cm(){
-        return length_m*100;
+        return length_m*100.0;
     }
 
     long double meters(){
@@ -59,7 +60,7 @@ public:
     }
 
     long double kilometers(){
-        return length_m/1000;
+        return length_m/1000.0;
     }
 
     long double miles(){
