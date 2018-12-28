@@ -7,7 +7,15 @@
 #include "Sensor.h"
 #include "units.h"
 
+void testDist();
+
 int main() {
+    testDist();
+
+    return 0;
+}
+
+void testDist(){
 
     apk::Distributor dist;
 
@@ -29,7 +37,7 @@ int main() {
     dist.subConnectToSensor(&sub1, imu);
     // Connect to the sensor
     //imu->connect();
-    testLength();
+
     // Let the Imu thread run and disconnect after
     std::this_thread::sleep_for(std::chrono::milliseconds(2500));
     dist.subConnectToSensor(&sub2, imu);
@@ -42,6 +50,4 @@ int main() {
     //imu->disconnect();
 
     std::cout << imu->test() << std::endl;
-
-    return 0;
 }
