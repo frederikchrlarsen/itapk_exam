@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.9)
 project(itapk_exam)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 
 find_package( Threads )
@@ -19,7 +19,7 @@ add_executable(itapk_exam
         include/Sensor.h
         include/sensors/Imu.h
         include/Distributor.h
-        include/Subscriber.h)
+        include/Subscriber.h src/Distributor.cpp src/SensorData.cpp include/SensorData.h include/sensors/UltraSonicSensor.h)
 
 
 

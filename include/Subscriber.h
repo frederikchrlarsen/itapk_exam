@@ -18,12 +18,15 @@ class Subscriber{
 public:
 
     Subscriber():id(gen()){
-        test();
+        std::cout << "Created subscriber: " << boost::uuids::to_string(id) << std::endl;
     };
 
     void test(){
-        std::cout << __PRETTY_FUNCTION__ << std::endl;
         std::cout << boost::uuids::to_string(id) << std::endl;
+    }
+
+    void dataCallback(float data){
+        std::cout << "Subscriber (" << boost::uuids::to_string(id) << ") got data: " << data << std::endl;
     }
 
 private:

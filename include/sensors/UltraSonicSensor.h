@@ -1,41 +1,26 @@
 //
-// Created by Frederik on 16-12-2018.
+// Created by frederik on 12/28/18.
 //
 
-#include <iostream>
-#include "Sensor.h"
-//#include "mutex"
-#include "thread"
-#include "chrono"
+#ifndef ITAPK_EXAM_ULTRASONICSENSOR_H
+#define ITAPK_EXAM_ULTRASONICSENSOR_H
 
-#ifndef ITAPK_EXAM_IMU_H
-#define ITAPK_EXAM_IMU_H
 
-namespace apk{
+#include <Sensor.h>
+#include <thread>
+#include <list>
+#include <boost/any.hpp>
 
-template <class T>
-class Imu: public apk::Sensor {
+template<class T>
+class UltraSonicSensor: public apk::Sensor {
 
 public:
-    Imu(){
-        std::cout << __PRETTY_FUNCTION__ << std::endl;
-    }
-
-    explicit Imu(std::function<void(T)> callback){
-        std::cout << __PRETTY_FUNCTION__ << std::endl;
-        dataCallback.push_back(callback);
-    }
-
-    std::string test() override {
-        return "Imu test";
-    }
-
     void addCallback(std::function<void(boost::any)> callback) override {
         dataCallback.push_back(callback);
     }
 
     void connect() override {
-        std::thread thread_data_gen(&Imu::dataGenerator, this);
+        std::thread thread_data_gen(&UltraSonicSensor::dataGenerator, this);
         thread_data_gen.detach();
     }
 
@@ -66,7 +51,7 @@ private:
     int counter = 0;
     std::list<std::function<void(T)>> dataCallback;
 
+
 };
 
-}
-#endif //ITAPK_EXAM_IMU_H
+#endif //ITAPK_EXAM_ULTRASONICSENSOR_H

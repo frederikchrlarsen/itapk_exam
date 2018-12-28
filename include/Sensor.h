@@ -7,19 +7,20 @@
 
 #include <ostream>
 #include <functional>
-
+#include <boost/any.hpp>
 namespace apk{
 
 
-template <class T>
 class Sensor {
 
 public:
-    explicit Sensor();
+    explicit Sensor() = default;
 
-    virtual void read();
+    virtual std::string test(){
+        return __PRETTY_FUNCTION__;
+    };
 
-    virtual std::string test();
+    virtual void addCallback(std::function<void(boost::any)>) = 0;
 
     virtual void connect() = 0;
 
@@ -28,22 +29,6 @@ public:
 protected:
 
 };
-
-template<class T>
-Sensor<T>::Sensor() {
-}
-
-template<class T>
-void Sensor<T>::read() {
-
-}
-
-template<class T>
-std::string Sensor<T>::test() {
-
-    return __PRETTY_FUNCTION__;
-
-}
 
 }
 #endif //ITAPK_EXAM_SENSOR_H
