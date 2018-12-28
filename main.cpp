@@ -9,7 +9,7 @@
 int main() {
     //using namespace std::literals;
 
-    //std::cout << "Number to degrees: " <<2.0_deg << std::endl;
+    //std::cout << "Number to degrees: " << 2.0_deg << std::endl;
     //auto x = 2.0h;
     //auto y = 2.0min;
     //auto res = x-y;
