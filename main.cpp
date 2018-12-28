@@ -29,7 +29,7 @@ int main() {
     dist.subConnectToSensor(&sub1, imu);
     // Connect to the sensor
     //imu->connect();
-
+    testLength();
     // Let the Imu thread run and disconnect after
     std::this_thread::sleep_for(std::chrono::milliseconds(2500));
     dist.subConnectToSensor(&sub2, imu);
