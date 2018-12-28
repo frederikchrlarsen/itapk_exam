@@ -5,6 +5,7 @@
 #include <Distributor.h>
 #include "Imu.h"
 #include "Sensor.h"
+#include "units.h"
 
 int main() {
 
@@ -41,5 +42,6 @@ int main() {
     //imu->disconnect();
 
     std::cout << imu->test() << std::endl;
+
     return 0;
 }
