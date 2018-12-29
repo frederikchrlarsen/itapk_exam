@@ -62,6 +62,9 @@ public:
         return Length{length_m - rh.meters(), Length::METER};
     }
 
+    friend std::ostream& operator<< ( std::ostream& o, Length rh ) {
+        return o << rh.meters() << "m ";
+    }
     // Following would allow negative units but what is -10m?
     //Length operator-(){
     //    return Length{-length_m, Length::METER};
@@ -130,6 +133,7 @@ void testLength(){
     std::cout << "Total miles: " << total.miles() << std::endl;
     std::cout << "Total km: " << total.kilometers() << std::endl;
     std::cout << "x4 m: " << x4.meters() << std::endl;
+    std::cout << "Length of x5: " << x5 << std::endl;
 }
 
 
