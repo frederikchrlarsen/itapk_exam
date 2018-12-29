@@ -25,7 +25,8 @@ add_executable(itapk_exam
         include/SensorData.h
         include/sensors/UltraSonicSensor.h
         include/Subscriber.h
-        include/units.h)
+        include/units.h
+        )
 
 target_link_libraries(itapk_exam ${CMAKE_THREAD_LIBS_INIT} ${Boost_LIBRARIES})
 

@@ -8,6 +8,7 @@
 // REF: Inspiration found on https://arne-mertz.de/2016/10/modern-c-features-user-defined-literals/
 // TODO: template or other fix to support more inputs.
 #include <boost/static_assert.hpp>
+#include <iostream>
 
 class Length {
 public:
@@ -111,6 +112,7 @@ Length operator "" _mi(unsigned long long arg) {
 }
 
 void testLength(){
+
     auto x1 = 10.0_km;
     auto x2 = 20.0_mi;
     auto x3 = 15.0_cm;
