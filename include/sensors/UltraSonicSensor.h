@@ -12,7 +12,7 @@
 #include <boost/any.hpp>
 #include <units.h>
 #include <chrono>
-#include <c++/8.1.0/iostream>
+#include <iostream>
 #include <ctime>
 
 using namespace std::literals;
@@ -68,13 +68,15 @@ void testUltraSonicSensor(){
     sig.connect(printLength());
 
     ultraSonicSensor.connect();
-    _sleep(5000);
+    std::this_thread::sleep_for(5000ms);
 
     ultraSonicSensor.disconnect();
-    _sleep(1000);
+    std::this_thread::sleep_for(1000ms);
 
     ultraSonicSensor.connect();
-    _sleep(5000);
+    std::this_thread::sleep_for(5000ms);
+    ultraSonicSensor.disconnect();
+    std::this_thread::sleep_for(1000ms);
 }
 
 #endif //ITAPK_EXAM_ULTRASONICSENSOR_H

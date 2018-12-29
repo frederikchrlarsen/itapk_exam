@@ -14,6 +14,7 @@ void testDist();
 
 int main() {
     testUltraSonicSensor();
+    testDist();
 
     return 0;
 }

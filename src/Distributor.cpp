@@ -17,7 +17,7 @@ void apk::Distributor::removeSubscriber(apk::Subscriber *removingSub) {
 
 void apk::Distributor::subConnectToSensor(apk::Subscriber *sub, sensor_ptr sensor) {
     if(this->isSensorInList(sensor)){
-        auto boostMethod = boost::bind(&apk::Subscriber::dataCallback, sub, _1);
+        auto boostMethod = boost::bind(&apk::Subscriber::dataCallbackImu, sub, _1);
         boost::signals2::connection connection = this->sig.connect(boostMethod);
     }
 }
