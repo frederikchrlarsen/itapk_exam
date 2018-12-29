@@ -16,22 +16,28 @@ namespace apk{
 class Subscriber{
 
 public:
+    typedef boost::uuids::uuid idType;
 
-    Subscriber():id(gen()){
-        std::cout << "Created subscriber: " << boost::uuids::to_string(id) << std::endl;
+    Subscriber():id_(gen_()){
+        std::cout << "Created subscriber: " << boost::uuids::to_string(this->getId()) << std::endl;
     };
 
     void test(){
-        std::cout << boost::uuids::to_string(id) << std::endl;
+        std::cout << boost::uuids::to_string(this->getId()) << std::endl;
     }
 
-    void dataCallback(float data){
-        std::cout << "Subscriber (" << boost::uuids::to_string(id) << ") got data: " << data << std::endl;
+    const idType getId() const{
+        return id_;
     }
+
+    virtual void dataCallbackImu(float data) = 0;
+    virtual void dataCallbackUSS(float data) = 0;
+
+
 
 private:
-    boost::uuids::random_generator gen;
-    boost::uuids::uuid id;
+    boost::uuids::random_generator gen_;
+    boost::uuids::uuid id_;
 };
 
 }
