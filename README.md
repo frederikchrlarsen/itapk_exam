@@ -25,6 +25,10 @@ Inpireret af Exception opg 3.1.
   - [ ] Exceptions
   - [ ] smartPointer
   - [ ] Sikre oprydning / memory leaks
+  - [ ] Boost::mpl
+  - [ ] IfThenElse
+  - [ ] SFINAE
+  - [ ] .
   
   
 - [ ] Lektion 4 - [ ] Containers, algorithms and iterators

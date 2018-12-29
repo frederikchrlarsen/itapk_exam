@@ -54,11 +54,11 @@ public:
     }
 
     Length operator+(Length rh){
-        return Length{rh.meters()+length_m, Length::METER};
+        return Length{length_m + rh.meters(), Length::METER};
     }
 
     Length operator-(Length rh){
-        return Length{length_m-rh.meters(), Length::METER};
+        return Length{length_m - rh.meters(), Length::METER};
     }
 
     // Following would allow negative units but what is -10m?
