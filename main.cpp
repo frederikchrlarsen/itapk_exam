@@ -3,6 +3,7 @@
 #include <chrono>
 #include <Subscriber.h>
 #include <Distributor.h>
+#include <DataPlotter.h>
 #include "Imu.h"
 #include "Sensor.h"
 #include "units.h"
@@ -19,7 +20,7 @@ void testDist(){
 
     apk::Distributor dist;
 
-    apk::Subscriber sub1, sub2;
+    apk::DataPlotter sub1, sub2;
     dist.addSubscriber(&sub1);
     dist.addSubscriber(&sub2);
     dist.test();
