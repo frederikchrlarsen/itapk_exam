@@ -131,34 +131,5 @@ void testLength(){
 }
 
 
-//// used as conversion
-//constexpr long double operator"" _deg ( long double deg )
-//{
-//    return deg*3.141592/180;
-//}
-//
-////used with custom type
-//struct mytype
-//{
-//    mytype ( unsigned long long m):m(m){}
-//    unsigned long long m;
-//};
-//
-//mytype operator"" _mytype ( unsigned long long n )
-//{
-//    return mytype(n);
-//}
-//
-//// used for sideeffects
-//void operator"" _print ( const char* str )
-//{
-//    std::cout << str;
-//}
-//
-//unsigned long long binHelper(unsigned long long value)
-//{
-//    std::cout << "binHelper! " << value << std::endl;
-//    return value ? binHelper(value/10) << 1 | value%10 : 0;
-//}
 
 #endif //ITAPK_EXAM_UNITS_H
