@@ -10,48 +10,71 @@
 #include <thread>
 #include <list>
 #include <boost/any.hpp>
+#include <units.h>
+#include <chrono>
+#include <c++/8.1.0/iostream>
+#include <ctime>
 
-template<class T>
+using namespace std::literals;
+
 class UltraSonicSensor: public apk::Sensor {
 
 public:
-    void addCallback(std::function<void(boost::any)> callback) override {
-        dataCallback.push_back(callback);
-    }
+    typedef Length ReturnType;
+    typedef boost::signals2::signal<void (Length)> SignalType;
 
-    void connect() override {
+    explicit UltraSonicSensor(SignalType& sigType) {
+        signal_ = &sigType;
         std::thread thread_data_gen(&UltraSonicSensor::dataGenerator, this);
         thread_data_gen.detach();
     }
 
+    ~UltraSonicSensor(){
+        running = false;
+    }
+
     void dataGenerator(){
-        while(isConnected()){
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
-            for(auto const& callback: dataCallback)
-                callback(counter);
-            counter++;
+        while(running) {
+            std::this_thread::sleep_for(500ms);
+            counter = counter + Length{1, Length::METER};
+
+            if (isConnected()) {
+                (*signal_)(counter);
+            }
         }
     }
 
-    bool isConnected(){
-        //std:lock_guard<std::mutex> lock(mutex_connect);
-        return connected;
-    }
-
-    void disconnect() override {
-        //std:lock_guard<std::mutex> lock(mutex_connect);
-        //disconnected = true;
-        connected = false;
-    }
-
-
 private:
-    bool connected = true;
-    //std::mutex mutex_connect;
-    int counter = 0;
-    std::list<std::function<void(T)>> dataCallback;
-
-
+    bool running = true;
+    Length counter = Length{0, Length::METER};
+    SignalType* signal_;
 };
+
+
+void testUltraSonicSensor(){
+    typedef UltraSonicSensor::ReturnType UltraSonicSensorDataType;
+    typedef UltraSonicSensor::SignalType UltraSonicSensorSignal;
+
+    struct printLength{
+        void operator()(UltraSonicSensorDataType length){
+                std::cout << "Length in meters: " << length.meters() << std::endl;
+            }
+    };
+
+    UltraSonicSensorSignal sig;
+
+    UltraSonicSensor ultraSonicSensor(sig);
+
+    sig.connect(printLength());
+
+    ultraSonicSensor.connect();
+    _sleep(5000);
+
+    ultraSonicSensor.disconnect();
+    _sleep(1000);
+
+    ultraSonicSensor.connect();
+    _sleep(5000);
+}
 
 #endif //ITAPK_EXAM_ULTRASONICSENSOR_H

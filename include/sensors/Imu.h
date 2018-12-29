@@ -48,18 +48,6 @@ public:
         }
     }
 
-    bool isConnected(){
-        //std:lock_guard<std::mutex> lock(mutex_connect);
-        return connected;
-    }
-
-    void disconnect() override {
-        //std:lock_guard<std::mutex> lock(mutex_connect);
-        //disconnected = true;
-        connected = false;
-    }
-
-
 private:
     bool connected = true;
     //std::mutex mutex_connect;

@@ -7,11 +7,13 @@
 #include "Imu.h"
 #include "Sensor.h"
 #include "units.h"
+#include "UltraSonicSensor.h"
+
 
 void testDist();
 
 int main() {
-    testDist();
+    testUltraSonicSensor();
 
     return 0;
 }
