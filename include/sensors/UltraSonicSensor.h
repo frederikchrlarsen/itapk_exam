@@ -17,11 +17,34 @@
 
 using namespace std::literals;
 
+enum BitField{
+    start = 0,
+    data0 = 1,
+    data1 = 2,
+    sampleRate0 = 3,
+    sampleRate1 = 4,
+    sampleRate2 = 5,
+    resolution0 = 6,
+    resolution1 = 7
+};
+
 class UltraSonicSensor: public apk::Sensor {
 
 public:
     typedef Length ReturnType;
     typedef boost::signals2::signal<void (Length)> SignalType;
+
+    enum SampleRate{
+        HZ_1 = 1,
+        HZ_2 = 2,
+        HZ_5 = 5,
+        HZ_10 = 10
+    };
+
+    enum DistanceType{
+        CM,
+        METER
+    };
 
     explicit UltraSonicSensor(SignalType& sigType) {
         signal_ = &sigType;
@@ -33,9 +56,24 @@ public:
         running = false;
     }
 
+    void setSampleRate(UltraSonicSensor::SampleRate sampleRateArg){
+        sampleRate = sampleRateArg;
+    }
+
+    void setDistanceType(UltraSonicSensor::DistanceType distanceArg){
+        distanceType = distanceTypeTranslator(distanceArg);
+    }
+
+private:
+    bool running = true;
+    float sampleRate = 1;
+    Length::unit distanceType = distanceTypeTranslator(METER);
+    Length counter = Length{0, distanceType};
+    SignalType* signal_;
+
     void dataGenerator(){
         while(running) {
-            std::this_thread::sleep_for(500ms);
+            std::this_thread::sleep_for(1000ms/sampleRate);
             counter = counter + Length{1, Length::METER};
 
             if (isConnected()) {
@@ -44,10 +82,15 @@ public:
         }
     }
 
-private:
-    bool running = true;
-    Length counter = Length{0, Length::METER};
-    SignalType* signal_;
+    Length::unit distanceTypeTranslator(DistanceType state){
+        if(state == METER){
+            return Length::METER;
+        } else if (state == CM) {
+            return Length::CM;
+        } else {
+            std::cout << "Unknown setting." << std::endl;
+        }
+    }
 };
 
 
@@ -71,6 +114,7 @@ void testUltraSonicSensor(){
     std::this_thread::sleep_for(5000ms);
 
     ultraSonicSensor.disconnect();
+    ultraSonicSensor.setSampleRate(UltraSonicSensor::SampleRate::HZ_10);
     std::this_thread::sleep_for(1000ms);
 
     ultraSonicSensor.connect();
@@ -78,5 +122,6 @@ void testUltraSonicSensor(){
     ultraSonicSensor.disconnect();
     std::this_thread::sleep_for(1000ms);
 }
+
 
 #endif //ITAPK_EXAM_ULTRASONICSENSOR_H

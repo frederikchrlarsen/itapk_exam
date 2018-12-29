@@ -8,6 +8,7 @@
 // REF: Inspiration found on https://arne-mertz.de/2016/10/modern-c-features-user-defined-literals/
 // TODO: template or other fix to support more inputs.
 #include <boost/static_assert.hpp>
+#include <iostream>
 
 class Length {
 public:
@@ -111,6 +112,7 @@ Length operator "" _mi(unsigned long long arg) {
 }
 
 void testLength(){
+
     auto x1 = 10.0_km;
     auto x2 = 20.0_mi;
     auto x3 = 15.0_cm;
@@ -131,34 +133,5 @@ void testLength(){
 }
 
 
-//// used as conversion
-//constexpr long double operator"" _deg ( long double deg )
-//{
-//    return deg*3.141592/180;
-//}
-//
-////used with custom type
-//struct mytype
-//{
-//    mytype ( unsigned long long m):m(m){}
-//    unsigned long long m;
-//};
-//
-//mytype operator"" _mytype ( unsigned long long n )
-//{
-//    return mytype(n);
-//}
-//
-//// used for sideeffects
-//void operator"" _print ( const char* str )
-//{
-//    std::cout << str;
-//}
-//
-//unsigned long long binHelper(unsigned long long value)
-//{
-//    std::cout << "binHelper! " << value << std::endl;
-//    return value ? binHelper(value/10) << 1 | value%10 : 0;
-//}
 
 #endif //ITAPK_EXAM_UNITS_H
