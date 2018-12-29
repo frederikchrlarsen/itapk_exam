@@ -23,31 +23,31 @@ public:
     typedef Length ReturnType;
     typedef boost::signals2::signal<void (Length)> SignalType;
 
-    void addCallback(std::function<void(boost::any)> callback) override {
-        dataCallback.push_back(callback);
-    }
-
-    void connect()override{};
-
-    void connectSignal(SignalType& sigType) {
+    explicit UltraSonicSensor(SignalType& sigType) {
         signal_ = &sigType;
         std::thread thread_data_gen(&UltraSonicSensor::dataGenerator, this);
         thread_data_gen.detach();
-        connected = true;
+    }
+
+    ~UltraSonicSensor(){
+        running = false;
     }
 
     void dataGenerator(){
-        while(isConnected()){
+        while(running) {
             std::this_thread::sleep_for(500ms);
-            (*signal_)(counter);
             counter = counter + Length{1, Length::METER};
+
+            if (isConnected()) {
+                (*signal_)(counter);
+            }
         }
     }
 
 private:
+    bool running = true;
     Length counter = Length{0, Length::METER};
     SignalType* signal_;
-    std::list<std::function<void(Length)>> dataCallback;
 };
 
 
@@ -63,12 +63,17 @@ void testUltraSonicSensor(){
 
     UltraSonicSensorSignal sig;
 
-    UltraSonicSensor ultraSonicSensor;
+    UltraSonicSensor ultraSonicSensor(sig);
 
     sig.connect(printLength());
 
-    ultraSonicSensor.connectSignal(sig);
+    ultraSonicSensor.connect();
+    _sleep(5000);
 
+    ultraSonicSensor.disconnect();
+    _sleep(1000);
+
+    ultraSonicSensor.connect();
     _sleep(5000);
 }
 

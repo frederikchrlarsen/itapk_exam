@@ -20,9 +20,11 @@ namespace apk{
                 return __PRETTY_FUNCTION__;
             };
 
-            virtual void addCallback(std::function<void(boost::any)>) = 0;
+            virtual void addCallback(std::function<void(boost::any)>){};
 
-            virtual void connect() = 0;
+            virtual void connect() {
+                connected = true;
+            }
 
             void disconnect() {
                 connected = false;
@@ -34,8 +36,7 @@ namespace apk{
 
         protected:
             bool connected = false;
-
     };
-
 }
+
 #endif //ITAPK_EXAM_SENSOR_H
