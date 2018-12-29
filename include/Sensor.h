@@ -8,34 +8,34 @@
 #include <ostream>
 #include <functional>
 #include <boost/any.hpp>
+#include <boost/signals2/signal.hpp>
+
 namespace apk{
+    class Sensor {
 
+        public:
+            explicit Sensor() = default;
 
-class Sensor {
+            virtual std::string test(){
+                return __PRETTY_FUNCTION__;
+            };
 
-public:
-    explicit Sensor() = default;
+            virtual void addCallback(std::function<void(boost::any)>) = 0;
 
-    virtual std::string test(){
-        return __PRETTY_FUNCTION__;
+            virtual void connect() = 0;
+
+            void disconnect() {
+                connected = false;
+            }
+
+            bool isConnected(){
+                return connected;
+            }
+
+        protected:
+            bool connected = false;
+
     };
-
-    virtual void addCallback(std::function<void(boost::any)>) = 0;
-
-    virtual void connect() = 0;
-
-    void disconnect() {
-        connected = false;
-    }
-
-    bool isConnected(){
-        return connected;
-    }
-
-protected:
-    bool connected = false;
-
-};
 
 }
 #endif //ITAPK_EXAM_SENSOR_H
