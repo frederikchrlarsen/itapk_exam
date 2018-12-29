@@ -10,6 +10,7 @@
 #include <thread>
 #include <list>
 #include <boost/any.hpp>
+#include <units.h>
 
 template<class T>
 class UltraSonicSensor: public apk::Sensor {
@@ -33,25 +34,15 @@ public:
         }
     }
 
-    bool isConnected(){
-        //std:lock_guard<std::mutex> lock(mutex_connect);
-        return connected;
-    }
-
-    void disconnect() override {
-        //std:lock_guard<std::mutex> lock(mutex_connect);
-        //disconnected = true;
-        connected = false;
-    }
 
 
 private:
-    bool connected = true;
-    //std::mutex mutex_connect;
     int counter = 0;
     std::list<std::function<void(T)>> dataCallback;
-
-
 };
+
+void testUltraSonicSensor(){
+
+}
 
 #endif //ITAPK_EXAM_ULTRASONICSENSOR_H

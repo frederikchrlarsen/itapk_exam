@@ -24,9 +24,16 @@ public:
 
     virtual void connect() = 0;
 
-    virtual void disconnect() = 0;
+    void disconnect() {
+        connected = false;
+    }
+
+    bool isConnected(){
+        return connected;
+    }
 
 protected:
+    bool connected = false;
 
 };
 
