@@ -46,6 +46,8 @@ public:
         METER
     };
 
+    UltraSonicSensor() = default;
+
     explicit UltraSonicSensor(SignalType& sigType) {
         signal_ = &sigType;
         std::thread thread_data_gen(&UltraSonicSensor::dataGenerator, this);
@@ -54,6 +56,10 @@ public:
 
     ~UltraSonicSensor(){
         running = false;
+    }
+
+    void connectSignal(SignalType& sigType){
+        signal_ = &sigType;
     }
 
     void setSampleRate(UltraSonicSensor::SampleRate sampleRateArg){
