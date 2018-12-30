@@ -50,7 +50,6 @@ void apk::UltraSonicSensor::dataGenerator() {
         counter = counter + 1_m;
 
         if (isConnected() && signal_ != nullptr) {
-            std::cout << "Calling signal " << "isConnected: " << isConnected() << " isRunning: " << running_ << std::endl;
             (*signal_)(counter);
         }
     }

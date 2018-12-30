@@ -7,6 +7,7 @@
 #include "Imu.h"
 #include "Sensor.h"
 #include "UltraSonicSensor.h"
+#include <manipulateData.h>
 
 
 void testDist();
@@ -20,6 +21,21 @@ void testSpeed();
 int main() {
     testSpeed();
 
+    /*
+
+    apk::DataPlotter sub1, sub2;
+
+    manipulateData m1;
+    m1.addSubscriber(&sub1);
+    m1.addSubscriber(&sub2);
+    m1.forEach();
+    m1.accumulate();
+
+    int accumulatedId = m1();
+    std::cout << std::endl;
+    std::cout << accumulatedId;
+
+     */
     return 0;
 }
 
@@ -28,12 +44,6 @@ void testDist(){
     apk::Distributor dist;
 
     apk::DataPlotter sub1, sub2;
-    dist.addSubscriber(&sub1);
-    dist.addSubscriber(&sub2);
-    dist.test();
-
-    // Callback function as a lambda expression for now
-    //std::function<void(float)> call = [&](float a){ std::cout << a << std::endl; };
 
     // The sensor interface
     apk::Sensor* imu;
@@ -46,20 +56,24 @@ void testDist(){
 
     dist.addSensor(ultraSonicSensor);
     dist.connectSensor(ultraSonicSensor);
-    dist.subConnectToSensor(&sub1, ultraSonicSensor);
+    dist.connectToSensor(&sub1, ultraSonicSensor);
+    dist.connectToSensor(&sub1, ultraSonicSensor);
+
 
 
     dist.addSensor(imu);
     dist.connectSensor(imu);
-    dist.subConnectToSensor(&sub1, imu);
+    dist.connectToSensor(&sub1, imu);
     // Connect to the sensor
     //imu->connect();
 
     // Let the Imu thread run and disconnect after
     std::this_thread::sleep_for(std::chrono::milliseconds(2500));
-    dist.subConnectToSensor(&sub2, imu);
+    dist.connectToSensor(&sub2, imu);
     std::this_thread::sleep_for(std::chrono::milliseconds(2500));
-    dist.removeSubscriber(&sub2);
+    //dist.removeSubscriber(&sub2);
+    dist.disconnectFromSensor(&sub1, ultraSonicSensor);
+    dist.disconnectFromSensor(&sub1, ultraSonicSensor);
     ultraSonicSensorPtr->setSampleRate(apk::UltraSonicSensor::SampleRate::HZ_10);
     std::this_thread::sleep_for(std::chrono::milliseconds(2500));
     dist.disconnectSensor(imu);
