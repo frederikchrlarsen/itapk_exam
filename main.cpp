@@ -11,7 +11,10 @@
 
 void testDist();
 
+void testLength();
+
 int main() {
+    //testLength();
     //testUltraSonicSensor();
     testDist();
 
@@ -61,4 +64,26 @@ void testDist(){
     //imu->disconnect();
 
     std::cout << imu->test() << std::endl;
+}
+
+void testLength() {
+    using namespace apk::literals;
+
+    auto x1 = 10.0_km;
+    auto x2 = 20.0_mi;
+    auto x3 = 15.0_cm;
+    auto x4 = 10_m;
+    auto x5 = 10_m - 15_m;
+
+    auto total = x1 + x2 + x3 + x4 - 115.0_m;
+
+    std::cout << "Km:" << x1.kilometers() << std::endl;
+    std::cout << "Mi:" << x1.miles() << std::endl << std::endl;
+
+    std::cout << "MILES: " << x2.miles() << std::endl;
+    std::cout << "Km: " << x2.kilometers() << std::endl << std::endl;
+
+    std::cout << "Total miles: " << total.miles() << std::endl;
+    std::cout << "Total km: " << total.kilometers() << std::endl;
+    std::cout << "x4 m: " << x4.meters() << std::endl;
 }

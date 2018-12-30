@@ -6,15 +6,15 @@
 #define ITAPK_EXAM_ULTRASONICSENSOR_H
 
 
-#include <Sensor.h>
+#include "Sensor.h"
 #include <thread>
 #include <list>
-#include <units.h>
+#include "Units.h"
 #include <chrono>
 #include <iostream>
 #include <ctime>
 
-using namespace std::literals;
+//using namespace std::literals;
 
 enum BitField{
     start = 0,
@@ -30,8 +30,8 @@ enum BitField{
 class UltraSonicSensor: public apk::Sensor {
 
 public:
-    typedef Length ReturnType;
-    typedef boost::signals2::signal<void (Length)> SignalType;
+    typedef apk::Length ReturnType;
+    typedef boost::signals2::signal<void (apk::Length)> SignalType;
 
     enum SampleRate{
         HZ_1 = 1,
@@ -63,7 +63,7 @@ public:
         running = false;
     }
 
-    apk::Sensor::SensorType getSensorType() const {
+    apk::Sensor::SensorType getSensorType() const override {
         return sensorType_;
     }
 
@@ -83,14 +83,14 @@ private:
     apk::Sensor::SensorType sensorType_;
     bool running = true;
     float sampleRate = 1;
-    Length::unit distanceType = distanceTypeTranslator(METER);
-    Length counter = Length{0, distanceType};
+    apk::Length::unit distanceType = distanceTypeTranslator(METER);
+    apk::Length counter = apk::Length{0, distanceType};
     SignalType* signal_;
 
     void dataGenerator(){
         while(running) {
-            std::this_thread::sleep_for(1000ms/sampleRate);
-            counter = counter + Length{1, Length::METER};
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000)/sampleRate);
+            counter = counter + apk::Length{1, apk::Length::METER};
 
             if (isConnected()) {
                 (*signal_)(counter);
@@ -98,11 +98,11 @@ private:
         }
     }
 
-    Length::unit distanceTypeTranslator(DistanceType state){
+    apk::Length::unit distanceTypeTranslator(DistanceType state){
         if(state == METER){
-            return Length::METER;
+            return apk::Length::METER;
         } else if (state == CM) {
-            return Length::CM;
+            return apk::Length::CM;
         } else {
             std::cout << "Unknown setting." << std::endl;
         }
