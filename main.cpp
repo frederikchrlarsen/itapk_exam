@@ -166,6 +166,10 @@ void testUltraSonicSensor(){
 void testSensorData(){
 
     int arr[24] = {0};
-
+    for(int i = 0; i<24; ++i)
+        arr[i] = i;
     apk::SensorData<int, 24> s(arr);
+    std::vector<int> vec({1, 2, 3});
+
+    std::cout << s << " size: " << s.size();
 }
