@@ -28,7 +28,11 @@ add_executable(itapk_exam
         include/Units.h
         src/DataPlotter.cpp
         include/DataPlotter.h
-        include/SensorInfo.h src/Units.cpp src/UltraSonicSensor.cpp include/manipulateData.h src/manipulateData.cpp)
+        include/SensorInfo.h
+        src/Units.cpp
+        src/UltraSonicSensor.cpp
+        include/manipulateData.h
+        src/manipulateData.cpp)
 
 target_link_libraries(itapk_exam ${CMAKE_THREAD_LIBS_INIT} ${Boost_LIBRARIES})
 
