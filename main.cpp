@@ -1,14 +1,14 @@
 #include <iostream>
 #include <functional>
 #include <chrono>
-#include <Subscriber.h>
-#include <Distributor.h>
-#include <DataPlotter.h>
+#include "Subscriber.h"
+#include "Distributor.h"
+#include "DataPlotter.h"
 #include "Imu.h"
 #include "Sensor.h"
 #include "UltraSonicSensor.h"
-#include <manipulateData.h>
-#include <SensorData.h>
+#include "manipulateData.h"
+#include "SensorData.h"
 
 
 void testDist();
@@ -17,9 +17,12 @@ void testLength();
 
 void testUltraSonicSensor();
 
+void testSpeed();
+
 void testSensorData();
 
 int main() {
+    testSpeed();
     //testLength();
     //testUltraSonicSensor();
     testSensorData();
@@ -108,6 +111,25 @@ void testLength() {
     std::cout << "Total miles: " << total.miles() << std::endl;
     std::cout << "Total km: " << total.kilometers() << std::endl;
     std::cout << "x4 m: " << x4.meters() << std::endl;
+
+    auto length = 5_m;
+    std::cout << "Length object: " << length << std::endl;
+    //std::cout << "Length" << 5_m << std::endl; // Can't use << since 5_m is prvalue.
+}
+
+void testSpeed(){
+    using namespace apk::literals;
+
+    auto length = 5_m;
+    auto duration = std::chrono::seconds(2);
+
+    auto speed = length/duration;
+
+    std::cout << "Speed calculated from length of " << length << " over a duration of " << duration.count() << "s. : "<< speed << std::endl;
+
+    auto s1 = 5_mPs + 5.0_mPs;
+    std::cout << "Speed object: " << s1 << std::endl; // s1 is an xvalue
+    //std::cout << "Speed difference object: " << 5_mPs + 5_mPs - 2_mPs << std::endl; // Again prvalue.
 }
 
 void testUltraSonicSensor(){

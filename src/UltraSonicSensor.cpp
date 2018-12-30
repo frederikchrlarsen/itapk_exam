@@ -2,9 +2,6 @@
 // Created by frederik on 12/30/18.
 //
 
-
-#include <sensors/UltraSonicSensor.h>
-
 #include "sensors/UltraSonicSensor.h"
 
 apk::UltraSonicSensor::UltraSonicSensor():
@@ -50,7 +47,7 @@ void apk::UltraSonicSensor::setDistanceType(apk::UltraSonicSensor::DistanceType 
 void apk::UltraSonicSensor::dataGenerator() {
     while(running_) {
         std::this_thread::sleep_for(std::chrono::milliseconds(1000)/sampleRate_);
-        counter = counter + apk::Length{1, apk::Length::METER};
+        counter = counter + 1_m;
 
         if (isConnected() && signal_ != nullptr) {
             (*signal_)(counter);

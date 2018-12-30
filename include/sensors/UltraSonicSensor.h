@@ -15,6 +15,8 @@
 #include <ctime>
 #include <future>
 
+using namespace apk::literals;
+
 namespace apk{
 
     enum BitField{
@@ -70,7 +72,7 @@ namespace apk{
         bool running_ = true;
         float sampleRate_ = 1;
         apk::Length::unit distanceType_ = distanceTypeTranslator(METER);
-        apk::Length counter = apk::Length{0, distanceType_};
+        apk::Length counter = 0_m;
         SignalType* signal_;
 
         void dataGenerator();
