@@ -72,7 +72,7 @@ private:
     static constexpr double milesToMeterFactor = 1609.344;
     static constexpr double meterToMilesFactor = 0.000621371192;
 };
-
+/*
 // Long double for comma numbers
 Length operator"" _m (long double arg)
 {
@@ -132,6 +132,6 @@ void testLength(){
     std::cout << "x4 m: " << x4.meters() << std::endl;
 }
 
-
+*/
 
 #endif //ITAPK_EXAM_UNITS_H

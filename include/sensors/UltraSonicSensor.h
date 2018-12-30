@@ -9,7 +9,6 @@
 #include <Sensor.h>
 #include <thread>
 #include <list>
-#include <boost/any.hpp>
 #include <units.h>
 #include <chrono>
 #include <iostream>
@@ -46,9 +45,15 @@ public:
         METER
     };
 
-    UltraSonicSensor() = default;
+    UltraSonicSensor():
+    sensorType_(apk::Sensor::SensorType::ULTRASONIC)
+    {
 
-    explicit UltraSonicSensor(SignalType& sigType) {
+    };
+
+    explicit UltraSonicSensor(SignalType& sigType):
+    sensorType_(apk::Sensor::SensorType::ULTRASONIC)
+    {
         signal_ = &sigType;
         std::thread thread_data_gen(&UltraSonicSensor::dataGenerator, this);
         thread_data_gen.detach();
@@ -56,6 +61,10 @@ public:
 
     ~UltraSonicSensor(){
         running = false;
+    }
+
+    apk::Sensor::SensorType getSensorType() const {
+        return sensorType_;
     }
 
     void connectSignal(SignalType& sigType){
@@ -71,6 +80,7 @@ public:
     }
 
 private:
+    apk::Sensor::SensorType sensorType_;
     bool running = true;
     float sampleRate = 1;
     Length::unit distanceType = distanceTypeTranslator(METER);
@@ -99,7 +109,7 @@ private:
     }
 };
 
-
+/*
 void testUltraSonicSensor(){
     typedef UltraSonicSensor::ReturnType UltraSonicSensorDataType;
     typedef UltraSonicSensor::SignalType UltraSonicSensorSignal;
@@ -127,7 +137,7 @@ void testUltraSonicSensor(){
     std::this_thread::sleep_for(5000ms);
     ultraSonicSensor.disconnect();
     std::this_thread::sleep_for(1000ms);
-}
+}*/
 
 
 #endif //ITAPK_EXAM_ULTRASONICSENSOR_H

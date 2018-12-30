@@ -17,7 +17,7 @@ template <class T>
 class Imu: public apk::Sensor {
 
 public:
-    Imu(){
+    Imu():sensorType_(apk::Sensor::SensorType::IMU){
         std::cout << __PRETTY_FUNCTION__ << std::endl;
     }
 
@@ -28,6 +28,10 @@ public:
 
     std::string test() override {
         return "Imu test";
+    }
+
+    apk::Sensor::SensorType getSensorType() const{
+        return sensorType_;
     }
 
     void addCallback(std::function<void(boost::any)> callback) override {
@@ -49,6 +53,7 @@ public:
     }
 
 private:
+    apk::Sensor::SensorType sensorType_;
     bool connected = true;
     //std::mutex mutex_connect;
     int counter = 0;

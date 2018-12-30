@@ -14,6 +14,12 @@ namespace apk{
     class Sensor {
 
         public:
+
+            enum SensorType{
+                IMU,
+                ULTRASONIC
+            };
+
             explicit Sensor() = default;
 
             virtual std::string test(){
@@ -21,6 +27,8 @@ namespace apk{
             };
 
             virtual void addCallback(std::function<void(boost::any)>){};
+
+            virtual SensorType getSensorType() const = 0;
 
             virtual void connect() {
                 connected = true;

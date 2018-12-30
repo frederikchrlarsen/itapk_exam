@@ -12,7 +12,7 @@
 void testDist();
 
 int main() {
-    testUltraSonicSensor();
+    //testUltraSonicSensor();
     testDist();
 
     return 0;
@@ -34,6 +34,14 @@ void testDist(){
     apk::Sensor* imu;
     // Instantiate an Imu sensor
     imu = new apk::Imu<float>;
+
+    apk::Sensor* ultraSonicSensor;
+
+    ultraSonicSensor = new UltraSonicSensor;
+    dist.addSensor(ultraSonicSensor);
+    dist.connectSensor(ultraSonicSensor);
+    dist.subConnectToSensor(&sub1, ultraSonicSensor);
+
 
     dist.addSensor(imu);
     dist.connectSensor(imu);

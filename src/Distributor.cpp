@@ -17,8 +17,18 @@ void apk::Distributor::removeSubscriber(apk::Subscriber *removingSub) {
 
 void apk::Distributor::subConnectToSensor(apk::Subscriber *sub, sensor_ptr sensor) {
     if(this->isSensorInList(sensor)){
-        auto boostMethod = boost::bind(&apk::Subscriber::dataCallbackImu, sub, _1);
-        boost::signals2::connection connection = this->sig.connect(boostMethod);
+
+        switch(sensor->getSensorType()){
+            case apk::Sensor::ULTRASONIC:{
+                auto boostMethod = boost::bind(&apk::Subscriber::ultraSonicSensorSignal, sub, _1);
+                boost::signals2::connection connection = this->ultraSonicSensorSignal.connect(boostMethod);
+                break;
+            }
+            case apk::Sensor::IMU:{
+                break;
+            }
+        }
+
     }
 }
 
@@ -40,7 +50,6 @@ void apk::Distributor::removeSensor(sensor_ptr sensor) {
 void apk::Distributor::connectSensor(sensor_ptr sensor) {
     if(this->isSensorInList(sensor)){
         sensor->connect();
-        registerSensorCallback(sensor, [&](boost::any data){this->sensorCallback(boost::any_cast<float>(data));});
     }else{
         this->addSensor(sensor);
         this->connectSensor(sensor);
@@ -51,10 +60,6 @@ void apk::Distributor::disconnectSensor(sensor_ptr sensor) {
     if(this->isSensorInList(sensor)){
         sensor->disconnect();
     }
-}
-
-void apk::Distributor::sensorCallback(float data) {
-    this->sig(data);
 }
 
 bool apk::Distributor::isSensorInList(sensor_ptr sensor) {

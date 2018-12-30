@@ -26,8 +26,9 @@ public:
     // TODO Add Imu::returnType
     typedef std::deque<float> imuBuffer;
 
-    void dataCallbackImu (float data) override;
-    void dataCallbackUSS (float data) override;
+    void imuSensorSignal(UltraSonicSensor::ReturnType data) override;
+
+    void ultraSonicSensorSignal(UltraSonicSensor::ReturnType data) override;
 
     imuBuffer* getImuData();
     friend std::ostream& operator<< ( std::ostream& o, apk::DataPlotter& plotter ) {
