@@ -11,7 +11,8 @@ apk::UltraSonicSensor::UltraSonicSensor():
 sensorType_(apk::Sensor::SensorType::ULTRASONIC),
 signal_(nullptr)
 {
-
+    threadDataGen_ = std::thread(&UltraSonicSensor::dataGenerator, this);
+    threadDataGen_.detach();
 }
 
 apk::UltraSonicSensor::UltraSonicSensor(apk::UltraSonicSensor::SignalType &sigType):
@@ -35,6 +36,7 @@ apk::Sensor::SensorType apk::UltraSonicSensor::getSensorType() const {
 
 void apk::UltraSonicSensor::connectSignal(apk::UltraSonicSensor::SignalType &sigType) {
     signal_ = &sigType;
+    std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
 void apk::UltraSonicSensor::setSampleRate(apk::UltraSonicSensor::SampleRate sampleRateArg) {
@@ -50,12 +52,12 @@ void apk::UltraSonicSensor::dataGenerator() {
         std::this_thread::sleep_for(std::chrono::milliseconds(1000)/sampleRate_);
         counter = counter + apk::Length{1, apk::Length::METER};
 
-        if (isConnected()) {
+        if (isConnected() && signal_ != nullptr) {
             std::cout << "Calling signal " << "isConnected: " << isConnected() << " isRunning: " << running_ << std::endl;
             (*signal_)(counter);
         }
     }
-    std::move(dataGenPromise_);
+    dataGenPromise_.set_value(true);
 }
 
 apk::Length::unit apk::UltraSonicSensor::distanceTypeTranslator(apk::UltraSonicSensor::DistanceType state) {

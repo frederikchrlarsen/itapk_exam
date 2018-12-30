@@ -17,7 +17,7 @@ void testUltraSonicSensor();
 
 int main() {
     //testLength();
-    testUltraSonicSensor();
+    //testUltraSonicSensor();
     testDist();
 
     return 0;
@@ -41,8 +41,9 @@ void testDist(){
     imu = new apk::Imu<float>;
 
     apk::Sensor* ultraSonicSensor;
-
     ultraSonicSensor = new apk::UltraSonicSensor;
+    auto ultraSonicSensorPtr = (apk::UltraSonicSensor*) ultraSonicSensor;
+
     dist.addSensor(ultraSonicSensor);
     dist.connectSensor(ultraSonicSensor);
     dist.subConnectToSensor(&sub1, ultraSonicSensor);
@@ -58,7 +59,8 @@ void testDist(){
     std::this_thread::sleep_for(std::chrono::milliseconds(2500));
     dist.subConnectToSensor(&sub2, imu);
     std::this_thread::sleep_for(std::chrono::milliseconds(2500));
-    dist.removeSubscriber(&sub1);
+    dist.removeSubscriber(&sub2);
+    ultraSonicSensorPtr->setSampleRate(apk::UltraSonicSensor::SampleRate::HZ_10);
     std::this_thread::sleep_for(std::chrono::milliseconds(2500));
     dist.disconnectSensor(imu);
     std::this_thread::sleep_for(std::chrono::milliseconds(2500));
