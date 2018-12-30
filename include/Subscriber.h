@@ -10,6 +10,7 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <iostream>
+#include "sensors/UltraSonicSensor.h"
 
 namespace apk{
 
@@ -30,8 +31,9 @@ public:
         return id_;
     }
 
-    virtual void dataCallbackImu(float data) = 0;
-    virtual void dataCallbackUSS(float data) = 0;
+    virtual void imuSensorSignal(UltraSonicSensor::ReturnType data) = 0;
+
+    virtual void ultraSonicSensorSignal(UltraSonicSensor::ReturnType data) = 0;
 
 
 

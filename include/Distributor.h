@@ -10,6 +10,7 @@
 #include "Sensor.h"
 #include <list>
 #include <boost/signals2.hpp>
+#include <sensors/UltraSonicSensor.h>
 
 namespace apk{
     class Distributor{
@@ -38,13 +39,17 @@ namespace apk{
     private:
         bool isSensorInList(sensor_ptr sensor);
 
-        void sensorCallback(float data);
-
         std::list<sensor_ptr> sensor;
 
         std::list<apk::Subscriber*> subscriber;
 
-        float_signal sig;
+        UltraSonicSensor::SignalType ultraSonicSensorSignal;
+
+        //float_signal sig;
+
+        //std::vector<boost::signals2::connection> signalList_;
+
+        std::map<apk::Subscriber*, boost::signals2::connection*> subConnectionMap;
 
     };
 }

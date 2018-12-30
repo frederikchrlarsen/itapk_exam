@@ -17,8 +17,23 @@ void apk::Distributor::removeSubscriber(apk::Subscriber *removingSub) {
 
 void apk::Distributor::subConnectToSensor(apk::Subscriber *sub, sensor_ptr sensor) {
     if(this->isSensorInList(sensor)){
-        auto boostMethod = boost::bind(&apk::Subscriber::dataCallbackImu, sub, _1);
-        boost::signals2::connection connection = this->sig.connect(boostMethod);
+
+        switch(sensor->getSensorType()){
+            case apk::Sensor::ULTRASONIC:{
+                std::cout << "Connecting subscriber to signal" << std::endl;
+                auto boostMethod = boost::bind(&apk::Subscriber::ultraSonicSensorSignal, sub, _1);
+                boost::signals2::connection connection = this->ultraSonicSensorSignal.connect(boostMethod);
+                break;
+            }
+            case apk::Sensor::IMU:{
+                break;
+            }
+            default:{
+                //TODO Error handling
+                throw "Error assigning signal to subscriber";
+            }
+        }
+
     }
 }
 
@@ -40,7 +55,21 @@ void apk::Distributor::removeSensor(sensor_ptr sensor) {
 void apk::Distributor::connectSensor(sensor_ptr sensor) {
     if(this->isSensorInList(sensor)){
         sensor->connect();
-        registerSensorCallback(sensor, [&](boost::any data){this->sensorCallback(boost::any_cast<float>(data));});
+        switch(sensor->getSensorType()){
+            case apk::Sensor::ULTRASONIC :{
+                auto ultra = (UltraSonicSensor*) sensor;
+                ultra->connectSignal(ultraSonicSensorSignal);
+                std::cout << "Adding signal to Ultra Sensor" << std::endl;
+                break;
+            }
+            case apk::Sensor::IMU :{
+
+            }
+            default:{
+                //TODO Error handling
+                std::cerr << "Sensor type unknown" << std::endl;
+            }
+        }
     }else{
         this->addSensor(sensor);
         this->connectSensor(sensor);
@@ -51,10 +80,6 @@ void apk::Distributor::disconnectSensor(sensor_ptr sensor) {
     if(this->isSensorInList(sensor)){
         sensor->disconnect();
     }
-}
-
-void apk::Distributor::sensorCallback(float data) {
-    this->sig(data);
 }
 
 bool apk::Distributor::isSensorInList(sensor_ptr sensor) {

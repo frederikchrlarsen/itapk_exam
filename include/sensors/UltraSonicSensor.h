@@ -6,122 +6,79 @@
 #define ITAPK_EXAM_ULTRASONICSENSOR_H
 
 
-#include <Sensor.h>
+#include "Sensor.h"
 #include <thread>
 #include <list>
-#include <boost/any.hpp>
-#include <units.h>
+#include "Units.h"
 #include <chrono>
 #include <iostream>
 #include <ctime>
+#include <future>
 
-using namespace std::literals;
+namespace apk{
 
-enum BitField{
-    start = 0,
-    data0 = 1,
-    data1 = 2,
-    sampleRate0 = 3,
-    sampleRate1 = 4,
-    sampleRate2 = 5,
-    resolution0 = 6,
-    resolution1 = 7
-};
-
-class UltraSonicSensor: public apk::Sensor {
-
-public:
-    typedef Length ReturnType;
-    typedef boost::signals2::signal<void (Length)> SignalType;
-
-    enum SampleRate{
-        HZ_1 = 1,
-        HZ_2 = 2,
-        HZ_5 = 5,
-        HZ_10 = 10
+    enum BitField{
+        start = 0,
+        data0 = 1,
+        data1 = 2,
+        sampleRate0 = 3,
+        sampleRate1 = 4,
+        sampleRate2 = 5,
+        resolution0 = 6,
+        resolution1 = 7
     };
 
-    enum DistanceType{
-        CM,
-        METER
+    class UltraSonicSensor: public apk::Sensor {
+
+    public:
+        typedef apk::Length ReturnType;
+        typedef boost::signals2::signal<void (apk::Length)> SignalType;
+
+        enum SampleRate{
+            HZ_1 = 1,
+            HZ_2 = 2,
+            HZ_5 = 5,
+            HZ_10 = 10
+        };
+
+        enum DistanceType{
+            CM,
+            METER
+        };
+
+        UltraSonicSensor();
+
+        explicit UltraSonicSensor(SignalType& sigType);
+
+        ~UltraSonicSensor();
+
+        apk::Sensor::SensorType getSensorType() const override;
+
+        void connectSignal(SignalType& sigType);
+
+        void setSampleRate(UltraSonicSensor::SampleRate sampleRateArg);
+
+        void setDistanceType(UltraSonicSensor::DistanceType distanceArg);
+
+    private:
+        //Threading
+        std::promise<bool> dataGenPromise_;
+        std::future<bool> dataGenFuture_ = dataGenPromise_.get_future();
+
+        std::thread threadDataGen_;
+        apk::Sensor::SensorType sensorType_;
+        bool running_ = true;
+        float sampleRate_ = 1;
+        apk::Length::unit distanceType_ = distanceTypeTranslator(METER);
+        apk::Length counter = apk::Length{0, distanceType_};
+        SignalType* signal_;
+
+        void dataGenerator();
+
+        apk::Length::unit distanceTypeTranslator(DistanceType state);
     };
 
-    explicit UltraSonicSensor(SignalType& sigType) {
-        signal_ = &sigType;
-        std::thread thread_data_gen(&UltraSonicSensor::dataGenerator, this);
-        thread_data_gen.detach();
-    }
 
-    ~UltraSonicSensor(){
-        running = false;
-    }
-
-    void setSampleRate(UltraSonicSensor::SampleRate sampleRateArg){
-        sampleRate = sampleRateArg;
-    }
-
-    void setDistanceType(UltraSonicSensor::DistanceType distanceArg){
-        distanceType = distanceTypeTranslator(distanceArg);
-    }
-
-private:
-    bool running = true;
-    float sampleRate = 1;
-    Length::unit distanceType = distanceTypeTranslator(METER);
-    Length counter = Length{0, distanceType};
-    SignalType* signal_;
-
-    void dataGenerator(){
-        while(running) {
-            std::this_thread::sleep_for(1000ms/sampleRate);
-            counter = counter + Length{1, Length::METER};
-
-            if (isConnected()) {
-                (*signal_)(counter);
-            }
-        }
-    }
-
-    Length::unit distanceTypeTranslator(DistanceType state){
-        if(state == METER){
-            return Length::METER;
-        } else if (state == CM) {
-            return Length::CM;
-        } else {
-            std::cout << "Unknown setting." << std::endl;
-        }
-    }
-};
-
-
-void testUltraSonicSensor(){
-    typedef UltraSonicSensor::ReturnType UltraSonicSensorDataType;
-    typedef UltraSonicSensor::SignalType UltraSonicSensorSignal;
-
-    struct printLength{
-        void operator()(UltraSonicSensorDataType length){
-                std::cout << "Length in meters: " << length.meters() << std::endl;
-            }
-    };
-
-    UltraSonicSensorSignal sig;
-
-    UltraSonicSensor ultraSonicSensor(sig);
-
-    sig.connect(printLength());
-
-    ultraSonicSensor.connect();
-    std::this_thread::sleep_for(5000ms);
-
-    ultraSonicSensor.disconnect();
-    ultraSonicSensor.setSampleRate(UltraSonicSensor::SampleRate::HZ_10);
-    std::this_thread::sleep_for(1000ms);
-
-    ultraSonicSensor.connect();
-    std::this_thread::sleep_for(5000ms);
-    ultraSonicSensor.disconnect();
-    std::this_thread::sleep_for(1000ms);
 }
-
 
 #endif //ITAPK_EXAM_ULTRASONICSENSOR_H
