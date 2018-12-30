@@ -16,40 +16,35 @@ namespace apk{
     class Distributor{
 
     public:
-        typedef boost::signals2::signal<void (float)> float_signal;
-        typedef std::function<void(boost::any)> float_func;
-        typedef apk::Sensor* sensor_ptr;
+        typedef std::pair<apk::Subscriber*, apk::Sensor*> conMapKeyType;
 
-        //typedef boost::signals2::signal<void (ImuData)> imu_signal;
-        //typedef std::function<void(ImuData)> imu_func;
+        typedef std::map<conMapKeyType, boost::signals2::connection> conMapType;
 
+        typedef apk::Sensor* sensorPtrType;
 
-        void test();
+        void connectToSensor(apk::Subscriber* sub, sensorPtrType sensor);
 
-        void addSubscriber(apk::Subscriber* subscriber);
-        void removeSubscriber(apk::Subscriber* subscriber);
-        void subConnectToSensor(apk::Subscriber* sub, sensor_ptr sensor);
-        void addSensor(sensor_ptr sensor);
-        void removeSensor(sensor_ptr sensor);
-        void connectSensor(sensor_ptr sensor);
-        void registerSensorCallback(sensor_ptr sensor, const float_func &callback);
-        void disconnectSensor(sensor_ptr sensor);
-        std::list<sensor_ptr> getSensorList();
+        void disconnectFromSensor(apk::Subscriber* sub, sensorPtrType sensor);
+
+        void addSensor(sensorPtrType sensor);
+
+        void removeSensor(sensorPtrType sensor);
+
+        void connectSensor(sensorPtrType sensor);
+
+        void disconnectSensor(sensorPtrType sensor);
+
+        std::list<sensorPtrType> getSensorList();
 
     private:
-        bool isSensorInList(sensor_ptr sensor);
 
-        std::list<sensor_ptr> sensor;
+        bool isSensorInList(sensorPtrType sensor);
 
-        std::list<apk::Subscriber*> subscriber;
+        std::list<sensorPtrType> sensor_;
 
-        UltraSonicSensor::SignalType ultraSonicSensorSignal;
+        UltraSonicSensor::SignalType ultraSonicSensorSignal_;
 
-        //float_signal sig;
-
-        //std::vector<boost::signals2::connection> signalList_;
-
-        std::map<apk::Subscriber*, boost::signals2::connection*> subConnectionMap;
+        conMapType subSensorConMap_;
 
     };
 }
