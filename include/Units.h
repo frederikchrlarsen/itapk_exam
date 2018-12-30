@@ -9,8 +9,10 @@
 // TODO: template or other fix to support more inputs.
 #include <boost/static_assert.hpp>
 #include <iostream>
+#include <chrono>
 
 namespace apk{
+    class Speed;
 
     class Length {
     public:
@@ -52,10 +54,45 @@ namespace apk{
 
         Length operator-(Length rh) const;
 
+        apk::Speed operator/(std::chrono::seconds seconds) const;
+
+        friend std::ostream& operator<< ( std::ostream& o, apk::Length& length ){
+            return o << length.meters() << "m";
+        }
+
     private:
         long double length_m;
         static constexpr double milesToMeterFactor = 1609.344;
         static constexpr double meterToMilesFactor = 0.000621371192;
+    };
+
+    class Speed{
+    public:
+        enum unit{
+            MPS
+        };
+
+        template<class T>
+        Speed(T speed, apk::Speed::unit unit) {
+            switch (unit) {
+                case MPS:
+                    speed_mPs = speed;
+                    break;
+            }
+        }
+
+        long double mPs() const;
+
+        Speed operator+(Speed rh) const;
+
+        Speed operator-(Speed rh) const;
+
+        friend std::ostream& operator<< ( std::ostream& o, apk::Speed& speed ){
+            return o << speed.mPs() << "m";
+        }
+
+    private:
+        long double speed_mPs;
     };
 
     inline namespace literals{
@@ -67,6 +104,8 @@ namespace apk{
 
         Length operator "" _mi(long double arg);
 
+        Speed operator"" _mPs (long double arg);
+
         // Unsigned long long for integers
         Length operator"" _m (unsigned long long arg);
 
@@ -75,6 +114,8 @@ namespace apk{
         Length operator "" _km(unsigned long long arg);
 
         Length operator "" _mi(unsigned long long arg);
+
+        Speed operator"" _mPs (unsigned long long arg);
     }
 }
 
