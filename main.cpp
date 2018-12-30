@@ -44,12 +44,6 @@ void testDist(){
     apk::Distributor dist;
 
     apk::DataPlotter sub1, sub2;
-    //dist.addSubscriber(&sub1);
-    //dist.addSubscriber(&sub2);
-    dist.test();
-
-    // Callback function as a lambda expression for now
-    //std::function<void(float)> call = [&](float a){ std::cout << a << std::endl; };
 
     // The sensor interface
     apk::Sensor* imu;
