@@ -1,4 +1,4 @@
-# Ittapk_exam
+﻿# Ittapk_exam
 
 
 ## Ideas
@@ -35,22 +35,22 @@ Inpireret af Exception opg 3.1.
   - [ ] Algorithms
     - [ ] why? : don't repeat mistakes, dont reinvent the wheel.
     - [ ] sort, min, max ...
-  - [ ] std::for_each
-  - [ ] std::transform
+  - [x] std::for_each
+  - [x] std::transform
   - [ ] std::ostream_iterator
   - [ ] std::cin
   - [ ] std::clamp
-  - [ ] std::accumulate
-  - [ ] lambda
-  - [ ] std::copy
+  - [x] std::accumulate
+  - [x] lambda
+  - [x] std::copy
   - [ ] std::ostream_iterator
-  - [ ] std::vector
-  - [ ] back_inserter
+  - [x] std::vector
+  - [x] back_inserter
   - [X] push_back
-  - [ ] boost::bind
+  - [x] boost::bind
   - [ ] Wrapper<int>
   - [X] std::function
-  - [ ] Functor
+  - [x] Functor
   
 
 - [ ] Lektion 5 - [ ] boost intro with selected libs
