@@ -2,8 +2,6 @@
 // Created by frederik on 12/27/18.
 //
 
-#include <Distributor.h>
-
 #include "Distributor.h"
 
 void apk::Distributor::connectToSensor(apk::Subscriber *sub, sensorPtrType sensor) {

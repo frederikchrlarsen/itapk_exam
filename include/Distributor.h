@@ -10,7 +10,7 @@
 #include "Sensor.h"
 #include <list>
 #include <boost/signals2.hpp>
-#include <sensors/UltraSonicSensor.h>
+#include "sensors/UltraSonicSensor.h"
 
 namespace apk{
     class Distributor{
