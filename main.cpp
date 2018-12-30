@@ -7,6 +7,7 @@
 #include "Imu.h"
 #include "Sensor.h"
 #include "UltraSonicSensor.h"
+#include <manipulateData.h>
 
 
 void testDist();
@@ -20,6 +21,21 @@ int main() {
     //testUltraSonicSensor();
     testDist();
 
+    /*
+
+    apk::DataPlotter sub1, sub2;
+
+    manipulateData m1;
+    m1.addSubscriber(&sub1);
+    m1.addSubscriber(&sub2);
+    m1.forEach();
+    m1.accumulate();
+
+    int accumulatedId = m1();
+    std::cout << std::endl;
+    std::cout << accumulatedId;
+
+     */
     return 0;
 }
 
