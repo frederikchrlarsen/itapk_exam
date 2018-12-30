@@ -8,6 +8,7 @@
 #include "Sensor.h"
 #include "UltraSonicSensor.h"
 #include <manipulateData.h>
+#include <SensorData.h>
 
 
 void testDist();
@@ -16,10 +17,13 @@ void testLength();
 
 void testUltraSonicSensor();
 
+void testSensorData();
+
 int main() {
     //testLength();
     //testUltraSonicSensor();
-    testDist();
+    testSensorData();
+    //testDist();
 
     /*
 
@@ -135,4 +139,11 @@ void testUltraSonicSensor(){
     std::this_thread::sleep_for(5000ms);
     ultraSonicSensor.disconnect();
     std::this_thread::sleep_for(1000ms);
+}
+
+void testSensorData(){
+
+    int arr[24] = {0};
+
+    apk::SensorData<int, 24> s(arr);
 }

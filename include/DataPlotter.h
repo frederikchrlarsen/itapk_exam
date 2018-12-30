@@ -16,6 +16,7 @@ class DataPlotter: public Subscriber {
 
 
 public:
+
     struct DataOverflow : public std::exception
     {
         const char * what () const noexcept override {
@@ -42,7 +43,7 @@ public:
 
     void addImuData (float data ) noexcept(false);
 private:
-
+    size_t imuBufferSize_;
     imuBuffer imuData_;
 };
 
