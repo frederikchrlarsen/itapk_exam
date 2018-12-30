@@ -13,9 +13,11 @@ void testDist();
 
 void testLength();
 
+void testUltraSonicSensor();
+
 int main() {
     //testLength();
-    //testUltraSonicSensor();
+    testUltraSonicSensor();
     testDist();
 
     return 0;
@@ -40,7 +42,7 @@ void testDist(){
 
     apk::Sensor* ultraSonicSensor;
 
-    ultraSonicSensor = new UltraSonicSensor;
+    ultraSonicSensor = new apk::UltraSonicSensor;
     dist.addSensor(ultraSonicSensor);
     dist.connectSensor(ultraSonicSensor);
     dist.subConnectToSensor(&sub1, ultraSonicSensor);
@@ -86,4 +88,35 @@ void testLength() {
     std::cout << "Total miles: " << total.miles() << std::endl;
     std::cout << "Total km: " << total.kilometers() << std::endl;
     std::cout << "x4 m: " << x4.meters() << std::endl;
+}
+
+void testUltraSonicSensor(){
+
+    using namespace std::literals;
+    typedef apk::UltraSonicSensor::ReturnType UltraSonicSensorDataType;
+    typedef apk::UltraSonicSensor::SignalType UltraSonicSensorSignal;
+
+    struct printLength{
+        void operator()(UltraSonicSensorDataType length){
+            std::cout << "Length in meters: " << length.meters() << std::endl;
+        }
+    };
+
+    UltraSonicSensorSignal sig;
+
+    apk::UltraSonicSensor ultraSonicSensor(sig);
+
+    sig.connect(printLength());
+
+    ultraSonicSensor.connect();
+    std::this_thread::sleep_for(5000ms);
+
+    ultraSonicSensor.disconnect();
+    ultraSonicSensor.setSampleRate(apk::UltraSonicSensor::SampleRate::HZ_10);
+    std::this_thread::sleep_for(1000ms);
+
+    ultraSonicSensor.connect();
+    std::this_thread::sleep_for(5000ms);
+    ultraSonicSensor.disconnect();
+    std::this_thread::sleep_for(1000ms);
 }
