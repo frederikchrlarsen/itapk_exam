@@ -21,7 +21,6 @@ add_executable(itapk_exam
         include/Distributor.h
         include/Subscriber.h
         src/Distributor.cpp
-        src/SensorData.cpp
         include/SensorData.h
         include/sensors/UltraSonicSensor.h
         include/Subscriber.h

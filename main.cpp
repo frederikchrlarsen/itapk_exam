@@ -22,7 +22,8 @@ void testSpeed();
 void testSensorData();
 
 int main() {
-    testSpeed();
+
+    //testSpeed();
     //testLength();
     //testUltraSonicSensor();
     testSensorData();
@@ -169,7 +170,26 @@ void testSensorData(){
     for(int i = 0; i<24; ++i)
         arr[i] = i;
     apk::SensorData<int, 24> s(arr);
-    std::vector<int> vec({1, 2, 3});
+    apk::SensorData<int, 24> s2(s);
+    apk::SensorData<int, 24> s3;
 
-    std::cout << s << " size: " << s.size();
+    for(int i = 0; i<24; ++i)
+        s3.push_back(i);
+    std::cout << s << " size: " << s.size() << std::endl;
+    std::cout << s2 << " size: " << s2.size() << std::endl;
+    std::cout << s3 << " size: " << s3.size() << std::endl;
+
+    int index = 0;
+    int arr2[24] = {};
+    while(s3.size() != 0){
+        size_t a = s3.size();
+        arr2[0] = s3.pop();
+        if(index%2 == 0)
+            s3.push_back(index);
+        std::cout << arr2[0] << ", ";
+        index++;
+    }
+    std::cout << s3 << " size: " << s3.size() << std::endl;
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
 }

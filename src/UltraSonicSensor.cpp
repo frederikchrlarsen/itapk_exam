@@ -63,6 +63,7 @@ apk::Length::unit apk::UltraSonicSensor::distanceTypeTranslator(apk::UltraSonicS
         return apk::Length::CM;
     } else {
         std::cout << "Unknown setting." << std::endl;
+        throw "unknown setting";
     }
 }
 
