@@ -89,6 +89,27 @@ void testDist(){
     //imu->disconnect();
 
     std::cout << imu->test() << std::endl;
+
+
+/*
+    apk::DataPlotter sub3, sub4;
+
+    manipulateData m1, m2;
+    m1.addSubscriber(&sub1);
+    m1.addSubscriber(&sub2);
+
+    m1.forEach();
+    m1.accumulate();
+    m1.writeNumberOfObjectsOrAmountOfSubscribers(2.5);
+
+    //std::cout << std::endl;
+*/
+
+
+
+
+
+
 }
 
 void testLength() {
