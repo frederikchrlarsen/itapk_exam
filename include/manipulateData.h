@@ -8,9 +8,9 @@
 #include <boost/uuid/uuid_io.hpp>
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
-#include <numeric>
-#include <cstdio>
-#include <cstdlib>
+#include <c++/8.1.0/numeric>
+#include<cstdio>
+#include<cstdlib>
 
 #ifndef ITAPK_EXAM_MANIPULATEDATA_H
 #define ITAPK_EXAM_MANIPULATEDATA_H
@@ -20,12 +20,20 @@ class manipulateData{
 
 public:
 
-    //Functor
-
-    int operator ()()
+    manipulateData()
     {
-        return  accumulatedId;
+        amountOfManipulateDataObjects++;
+    }
+
+    int operator ()(const int variant)
+    {
+        return  amountOfManipulateDataObjects -1;
     };
+
+    int operator()(const std::string)
+    {
+        return amountOfAttachedSubscribers;
+    }
 
     void addSubscriber(apk::Subscriber* subscriber);
     void removeSubscriber(apk::Subscriber* subscriber);
@@ -52,8 +60,17 @@ public:
     //Konverterer ID'er for alle tilkoblede subscribers til strings men lægger dem ikke sammen undervejs
     void transformIdsToString();
 
-    //Ikke implementeret
-    void clamp();
+
+    static int amountOfManipulateDataObjects;
+    static int amountOfAttachedSubscribers;
+
+    template<class T> void writeNumberOfObjectsOrAmountOfSubscribers(T x)
+    {
+        boost::variant< int, std::string > IDvariantInType(x);
+        int result = boost::apply_visitor( manipulateData(), IDvariantInType );
+        std::cout << result;
+
+    }
 
 private:
 
@@ -62,6 +79,9 @@ private:
     std::list<std::string> checkAccumulation;
     std::list<apk::Subscriber*> subscriber;
     std::vector<int> VectorOfNumbersInId;
+    std::string accumulatedIdInString;
+
+
 
 };
 

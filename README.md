@@ -54,13 +54,12 @@ Inpireret af Exception opg 3.1.
   
 
 - [ ] Lektion 5 - [ ] boost intro with selected libs
-  - [ ] boost::variant (Multiple types in same var)
-  - [ ] boost::static_visitor ( Checking what type is current?)
+  - [x] boost::variant (Multiple types in same var)
+  - [x] boost::static_visitor ( Checking what type is current?)
   - [X] boost::signals2 
   - [X] std::function
-  - [ ] std::bind
-  - [ ] std::SharedPointer
-  - [ ] std::for_each  
+  - [x] std::bind
+  - [ ] std::SharedPointer 
   - [ ] timer?
   - [ ] 
 
