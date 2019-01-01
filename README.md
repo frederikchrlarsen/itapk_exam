@@ -21,8 +21,8 @@ Inpireret af Exception opg 3.1.
 - [ ] Lektion ?
   - [X]  lambda 
   - [ ] functor
-  - [ ] Rules of 3/5
-  - [ ] Exceptions
+  - [X] Rules of 3/5
+  - [X] Exceptions
   - [ ] smartPointer
   - [ ] Sikre oprydning / memory leaks
   - [ ] Boost::mpl
@@ -68,21 +68,21 @@ Inpireret af Exception opg 3.1.
   - [ ] Safety guarantees
     - [ ] Basic
     - [ ] Strong
-    - [ ] No throw
+    - [X] No throw
   
   
 - [ ] Lektion 7 - [ ] C++11++
-  - [ ] prvalue, lvalue, xvalue | <T&&> argument
+  - [X] prvalue, lvalue, xvalue | <T&&> argument
   - [ ] compile time if
   - [X] literals / units
   - [ ] Variadic
-  - [ ] Moving concept
+  - [X] Moving concept
   - [X] Threading
   - [ ] Dimensional anlysis done in C++
   - [ ] **Perfekt forwarding**
-  - [ ] noexcept keyword (Moving)
-  - [ ] && -> denote rvalue -> move
-  - [ ] std::move
+  - [X] noexcept keyword (Moving)
+  - [X] && -> denote rvalue -> move
+  - [X] std::move
   - [ ] 
   
   
