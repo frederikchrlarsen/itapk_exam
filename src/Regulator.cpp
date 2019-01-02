@@ -22,8 +22,8 @@ void apk::Regulator::controlLoop(){
     }
 }
 
-void apk::Regulator::imuSensorSignal(UltraSonicSensor::ReturnType data){
-    //imuData = data;
+void apk::Regulator::imuSensorSignal(Imu::ReturnType data){
+    imuData = data;
 }
 
 void apk::Regulator::ultraSonicSensorSignal(UltraSonicSensor::ReturnType data){

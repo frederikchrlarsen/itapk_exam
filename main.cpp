@@ -60,7 +60,7 @@ void testSystem(){
     dataPlotter.startLoop();
 
     // Instantiate an Imu sensor
-    auto* imu = new apk::Imu<float>;
+    auto* imu = new apk::Imu;
 
     // Instantiate an UltraSonic sensor
     auto* ultraSonicSensor = new apk::UltraSonicSensor;
@@ -106,7 +106,7 @@ void testDist(){
     // The sensor interface
     apk::Sensor* imu;
     // Instantiate an Imu sensor
-    imu = new apk::Imu<float>;
+    imu = new apk::Imu;
 
     apk::Sensor* ultraSonicSensor;
     ultraSonicSensor = new apk::UltraSonicSensor;
@@ -274,7 +274,7 @@ void testDataPlotter(){
     // The sensor interface
     apk::Sensor* imu;
     // Instantiate an Imu sensor
-    imu = new apk::Imu<float>;
+    imu = new apk::Imu;
 
     apk::Sensor* ultraSonicSensor;
     ultraSonicSensor = new apk::UltraSonicSensor;
@@ -319,7 +319,7 @@ void testRegulator() {
     apk::DataPlotter dataPlotter(24);
 
     // Instantiate an Imu sensor
-    auto *imu = new apk::Imu<float>;
+    auto *imu = new apk::Imu;
 
     // Instantiate an UltraSonic sensor
     auto *ultraSonicSensor = new apk::UltraSonicSensor;

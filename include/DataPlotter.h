@@ -26,7 +26,7 @@ public:
     };
 
     // TODO Add Imu::returnType
-    typedef std::deque<float> imuBuffer;
+    typedef std::deque<Imu::ReturnType> imuBuffer;
 
     DataPlotter();
 
@@ -43,13 +43,13 @@ public:
 
     void updateUltraDisplay() const;
 
-    void imuSensorSignal(UltraSonicSensor::ReturnType data) override;
+    void imuSensorSignal(Imu::ReturnType data) override;
 
     void ultraSonicSensorSignal(UltraSonicSensor::ReturnType data) override;
 
     imuBuffer* getImuData();
     friend std::ostream& operator<< ( std::ostream& o, apk::DataPlotter& plotter ) {
-        std::deque<float>* que = plotter.getImuData();
+        std::deque<Imu::ReturnType>* que = plotter.getImuData();
 
         o << "############" << std::endl << "{";
         std::for_each(que->begin(), que->end(), [&](float &data){ o << data << ", ";});

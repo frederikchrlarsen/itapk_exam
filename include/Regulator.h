@@ -8,6 +8,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <sensors/Imu.h>
 #include "Subscriber.h"
 //#include "UltraSonicSensor.h
 
@@ -16,7 +17,7 @@ namespace apk {
     public:
         Regulator();
 
-        void imuSensorSignal(UltraSonicSensor::ReturnType data) override;
+        void imuSensorSignal(Imu::ReturnType data) override;
 
         void ultraSonicSensorSignal(UltraSonicSensor::ReturnType data) override;
 
@@ -28,7 +29,7 @@ namespace apk {
         void controlLoop();
 
         Length ultraSonicData=10_m;
-        float imuData = 12.2;
+        Imu::ReturnType imuData = 12.2;
         bool running_ = false;
     };
 }
