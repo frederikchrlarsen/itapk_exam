@@ -10,7 +10,7 @@ void apk::DataPlotter::ultraSonicSensorSignal(UltraSonicSensor::ReturnType data)
     try {
         ultraSonicBuffer_.push_back(data);
     }catch (std::runtime_error &e){
-        std::cerr << "DataPlotter failed adding data to ultraSonicBuffer: "  << e.what() << std::endl;
+        //std::cerr << "DataPlotter failed adding data to ultraSonicBuffer: "  << e.what() << std::endl;
     }
 }
 

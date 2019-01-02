@@ -25,10 +25,9 @@ namespace apk {
 
         void ultraSonicSensorSignal(UltraSonicSensor::ReturnType data) override;
 
-        void run(){
-            running_ = true;
-            std::thread(&apk::Regulator::controlLoop, this).detach();
-        }
+        void run();
+
+        void stop();
 
     private:
         void controlLoop();
