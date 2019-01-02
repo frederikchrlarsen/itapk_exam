@@ -59,7 +59,7 @@ public:
     void accumulate();
 
     //Konverterer ID'er for alle tilkoblede subscribers til strings
-    void transformAllIDsToString(std::list<std::string>);
+    void transformAllIDsToString(std::list<std::string> & arg);
 
 
     int getAccumulatedID()
