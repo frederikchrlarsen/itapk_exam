@@ -24,6 +24,10 @@ namespace apk{
             MILES
         };
 
+        Length():length_m(0){
+
+        }
+
         template<class T>
         Length(T length, apk::Length::unit unit) {
             switch (unit) {

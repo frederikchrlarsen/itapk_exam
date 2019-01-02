@@ -2,6 +2,8 @@
 // Created by frederik on 12/29/18.
 //
 
+#include <DataPlotter.h>
+
 #include "DataPlotter.h"
 
 
@@ -17,16 +19,89 @@ void apk::DataPlotter::addImuData(float data) noexcept(false){
 }
 
 void apk::DataPlotter::ultraSonicSensorSignal(UltraSonicSensor::ReturnType data) {
-
-    std::cout << "Got data: " << data.meters() << "m" << std::endl;
-
-    /*
-    addImuData(data);
-
-    std::cout << *this << std::endl;
-    */
+    try {
+        ultraSonicBuffer_.push_back(data);
+    }catch (std::runtime_error &e){
+        std::cerr << "DataPlotter failed adding data to ultraSonicBuffer: "  << e.what() << std::endl;
+    }
 }
 
 void apk::DataPlotter::imuSensorSignal(UltraSonicSensor::ReturnType data) {
 
+}
+
+apk::DataPlotter::DataPlotter(unsigned int frameRate):
+frameRate_(frameRate),
+sleepTime_(calculateSleepTime(frameRate_))
+{
+
+}
+
+apk::DataPlotter::DataPlotter():
+frameRate_(DEFAULT_FPS),
+sleepTime_(calculateSleepTime(frameRate_))
+{
+
+}
+
+std::chrono::seconds apk::DataPlotter::calculateSleepTime(unsigned int frequency) const {
+    return std::chrono::seconds(1/frequency);
+}
+
+void apk::DataPlotter::loop() {
+    while(loopRunning_){
+        updateData();
+        updateUltraDisplay();
+        std::this_thread::sleep_for(sleepTime_);
+    }
+
+    dataGenPromise_.set_value(true);
+
+}
+
+void apk::DataPlotter::startLoop() {
+    loopRunning_ = true;
+    std::thread(&apk::DataPlotter::loop, this).detach();
+    dataGenFuture_ = dataGenPromise_.get_future();
+}
+
+void apk::DataPlotter::stopLoop() {
+    if(loopRunning_){
+        loopRunning_ = false;
+        dataGenFuture_.wait();
+    }
+}
+
+apk::DataPlotter::~DataPlotter() {
+    stopLoop();
+}
+
+void apk::DataPlotter::updateData() {
+    while(ultraSonicBuffer_.size() != 0){
+        if(ultraSonicDataPosition_ == ultraSonicDataSize_)
+            ultraSonicDataPosition_ = 0;
+        try {
+            ultraSonicData_[ultraSonicDataPosition_++] = ultraSonicBuffer_.pop().meters();
+        }catch (std::runtime_error &e){
+            std::cerr << "Error updating data: " << e.what() << std::endl;
+        }
+    }
+}
+
+void apk::DataPlotter::updateUltraDisplay() const {
+    clearConsole();
+    std::copy(ultraSonicData_.begin(), ultraSonicData_.end(),
+            std::ostream_iterator<long double>(std::cout, " "));
+}
+
+void apk::DataPlotter::clearConsole() const {
+    //https://stackoverflow.com/questions/6486289/how-can-i-clear-console
+    #if defined _WIN32
+        printf("%s%s", "\33[", "31m");
+    #elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
+        printf('\033[2J');
+        system("clear");
+    #elif defined (__APPLE__)
+        system("clear");
+    #endif
 }

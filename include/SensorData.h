@@ -63,8 +63,8 @@ namespace apk{
             return data_[i];
         }
 
-        template<T, size_t>
-        friend std::ostream& operator<< ( std::ostream& o, SensorData& sensorData );
+        //template<T, size_t>
+        //std::ostream& operator<< ( std::ostream& o, SensorData& sensorData );
 
     private:
 
@@ -120,7 +120,7 @@ namespace apk{
 
     }
 
-
+    /*
     template<class T, size_t sizeT>
     std::ostream &operator<<(std::ostream &o, SensorData<T, sizeT> &sensorData) {
         size_t end = sensorData.getSize();
@@ -129,6 +129,7 @@ namespace apk{
             o << sensorData[i] << (i != end-1 ? ", ": "}");
         return o;
     }
+    */
 
     template<class T, size_t sizeT>
     size_t SensorData<T, sizeT>::getSize() const {
