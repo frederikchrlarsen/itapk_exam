@@ -72,7 +72,7 @@ private:
     apk::SensorData<apk::UltraSonicSensor::ReturnType, 64> ultraSonicBuffer_;
     std::array<long double, 100> ultraSonicData_ = {0};
     unsigned int ultraSonicDataSize_ = 100;
-    unsigned int ultraSonicDataPosition_;
+    unsigned int ultraSonicDataPosition_ = 0;
 
     size_t imuBufferSize_;
     imuBuffer imuData_;

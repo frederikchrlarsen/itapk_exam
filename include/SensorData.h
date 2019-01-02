@@ -149,7 +149,7 @@ namespace apk{
     template<class T, size_t sizeT>
     void SensorData<T, sizeT>::push_back(T &&data) {
 
-        if((dataEnd_  == dataStart_) && !isEmpty_ || (dataEnd_ == end()) && (dataStart_ == data_))
+        if(dataEnd_ == dataStart_ && !isEmpty_ || dataEnd_ == end() && (dataStart_ == data_))
             throw std::runtime_error("No more space in SensorData");
 
         *dataEnd_ = data;
@@ -161,7 +161,7 @@ namespace apk{
     template<class T, size_t sizeT>
     void SensorData<T, sizeT>::push_back(T &data) {
 
-        if((dataEnd_  == dataStart_) && !isEmpty_ || (dataEnd_ == end()) && (dataStart_ == data_))
+        if((dataEnd_  == dataStart_) && !isEmpty_ || dataEnd_ == end() && (dataStart_ == data_))
             throw std::runtime_error("No more space in SensorData");
 
         *dataEnd_ = data;

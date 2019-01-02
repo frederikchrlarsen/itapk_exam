@@ -99,8 +99,8 @@ void apk::DataPlotter::clearConsole() const {
     #if defined _WIN32
         printf("%s%s", "\33[", "31m");
     #elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
-        printf('\033[2J');
-        system("clear");
+        printf("\033[2J");
+        //system("clear");
     #elif defined (__APPLE__)
         system("clear");
     #endif
