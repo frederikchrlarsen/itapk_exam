@@ -35,6 +35,7 @@ namespace apk{
     public:
         typedef apk::Length ReturnType;
         typedef boost::signals2::signal<void (apk::Length)> SignalType;
+        typedef std::chrono::time_point<std::chrono::high_resolution_clock> timePointType;
 
         enum SampleRate{
             HZ_1 = 1,
@@ -63,21 +64,22 @@ namespace apk{
         void setDistanceType(UltraSonicSensor::DistanceType distanceArg);
 
     private:
+        void dataGenerator();
+
+        ReturnType generateSine(timePointType & startTime);
+
+        apk::Length::unit distanceTypeTranslator(DistanceType state);
+
         //Threading
         std::promise<bool> dataGenPromise_;
         std::future<bool> dataGenFuture_ = dataGenPromise_.get_future();
+        bool running_ = false;
 
-        std::thread threadDataGen_;
-        apk::Sensor::SensorType sensorType_;
-        bool running_ = true;
         float sampleRate_ = 1;
+        apk::Sensor::SensorType sensorType_;
         apk::Length::unit distanceType_ = distanceTypeTranslator(METER);
-        apk::Length counter = 0_m;
+
         SignalType* signal_;
-
-        void dataGenerator();
-
-        apk::Length::unit distanceTypeTranslator(DistanceType state);
     };
 
 

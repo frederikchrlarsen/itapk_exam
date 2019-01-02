@@ -28,7 +28,7 @@ namespace apk {
 
         void run(){
             running_ = true;
-            std::thread(&controlLoop, this).detach();
+            std::thread(&apk::Regulator::controlLoop, this).detach();
         }
 
     private:

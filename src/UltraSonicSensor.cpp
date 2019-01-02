@@ -7,18 +7,18 @@
 
 apk::UltraSonicSensor::UltraSonicSensor():
 sensorType_(apk::Sensor::SensorType::ULTRASONIC),
-signal_(nullptr)
+signal_(nullptr),
+running_(true)
 {
-    threadDataGen_ = std::thread(&UltraSonicSensor::dataGenerator, this);
-    threadDataGen_.detach();
+    std::thread(&UltraSonicSensor::dataGenerator, this).detach();
 }
 
 apk::UltraSonicSensor::UltraSonicSensor(apk::UltraSonicSensor::SignalType &sigType):
 sensorType_(apk::Sensor::SensorType::ULTRASONIC),
-signal_(&sigType)
+signal_(&sigType),
+running_(true)
 {
-    threadDataGen_ = std::thread(&UltraSonicSensor::dataGenerator, this);
-    threadDataGen_.detach();
+    std::thread(&UltraSonicSensor::dataGenerator, this).detach();
 }
 
 apk::UltraSonicSensor::~UltraSonicSensor() {
@@ -34,7 +34,6 @@ apk::Sensor::SensorType apk::UltraSonicSensor::getSensorType() const {
 
 void apk::UltraSonicSensor::connectSignal(apk::UltraSonicSensor::SignalType &sigType) {
     signal_ = &sigType;
-    std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
 void apk::UltraSonicSensor::setSampleRate(apk::UltraSonicSensor::SampleRate sampleRateArg) {
@@ -47,16 +46,13 @@ void apk::UltraSonicSensor::setDistanceType(apk::UltraSonicSensor::DistanceType 
 
 void apk::UltraSonicSensor::dataGenerator() {
     auto startTime = std::chrono::high_resolution_clock::now();
+
     while(running_) {
+
         std::this_thread::sleep_for(std::chrono::milliseconds(1000)/sampleRate_);
-        auto timeTemp = std::chrono::high_resolution_clock::now() - startTime;
-        auto timeElapsedMs = std::chrono::duration_cast<std::chrono::milliseconds>(timeTemp);
-        double t = timeElapsedMs.count()/1000.0;
-        double fs = 0.3;
-        counter = counter + 1_m;
-        apk::Length l(std::sin(t*2*M_PI*fs)+1, apk::Length::METER);
+
         if (isConnected() && signal_ != nullptr) {
-            (*signal_)(l);
+            (*signal_)(generateSine(startTime));
         }
     }
     dataGenPromise_.set_value(true);
@@ -71,6 +67,17 @@ apk::Length::unit apk::UltraSonicSensor::distanceTypeTranslator(apk::UltraSonicS
         std::cout << "Unknown setting." << std::endl;
         throw "unknown setting";
     }
+}
+
+apk::UltraSonicSensor::ReturnType apk::UltraSonicSensor::generateSine(timePointType &startTime) {
+
+    auto timeTemp = std::chrono::high_resolution_clock::now() - startTime;
+    auto timeElapsedMs = std::chrono::duration_cast<std::chrono::milliseconds>(timeTemp);
+    double t = timeElapsedMs.count()/1000.0;
+    double fs = 0.3;
+
+    ReturnType l(std::sin(t*2*M_PI*fs)+1, distanceType_);
+    return l;
 }
 
 

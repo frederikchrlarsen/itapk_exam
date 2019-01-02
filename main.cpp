@@ -27,6 +27,8 @@ void testDataPlotter();
 
 void testSystem();
 
+void manipulateData_();
+
 int main() {
 
     //testSpeed();
@@ -34,22 +36,13 @@ int main() {
     //testUltraSonicSensor();
     //testSensorData();
     //testDist();
-    //testDataPlotter();
+    testDataPlotter();
     //testSystem();
-    testRegulator();
-/*
-    apk::DataPlotter sub3, sub4;
+    //testRegulator();
 
-    manipulateData m1, m2;
-    m1.addSubscriber(&sub3);
-    m1.addSubscriber(&sub4);
+    //manipulateData_();
 
-    m1.forEach();
-    m1.accumulate();
-    std::cout << std::endl << m1.getAccumulatedID() << std::endl;
 
-    m1.writeNumObjectsOrAmountOfSubscribers(2.5);
-*/
 
     return 0;
 }
@@ -141,7 +134,6 @@ void testDist(){
 
     std::cout << imu->test() << std::endl;
 
-
 /*
     apk::DataPlotter sub3, sub4;
 
@@ -157,11 +149,11 @@ void testDist(){
 */
 
 
-
-
-
-
 }
+
+
+
+
 
 void testLength() {
     using namespace apk::literals;
@@ -337,4 +329,61 @@ void testRegulator() {
     dist.connectSensor(imu);
     dist.connectToSensor(&regulator, imu);
     std::this_thread::sleep_for(std::chrono::milliseconds(3100));
+}
+
+void manipulateData_()
+{
+
+    std::cout << "Tilføjer subscribers og mData objekter" << std::endl;
+    apk::DataPlotter sub1, sub2, sub3, sub4, sub5, sub6;
+    manipulateData m1, m2;
+    m1.addSubscriber(&sub1);
+    m1.addSubscriber(&sub2);
+    m2.addSubscriber(&sub3);
+    m2.addSubscriber(&sub4);
+
+    //Boost ID for m1 med subscribers sub3 og sub4 tilføjet
+
+    std::cout << "Boost ID for sub1 og sub2" << std::endl;
+    m1.forEach();
+
+    std::cout << "Akkumuleret ID for m1" << std::endl;
+    m1.accumulate();
+
+    std::cout << "Boost ID for sub3 og sub4" << std::endl;
+    m2.forEach();
+
+    std::cout << "Akkumuleret ID for m2" << std::endl;
+    m2.accumulate();
+
+    std::cout << std::endl << std::endl;
+
+    std::cout << "m2 kopieres til m1" << std::endl;
+    m1.copy(&m2);
+    m2.forEach();
+    m2.accumulate();
+
+    std::cout << "Udskrivning af totale antal mData objekter" << std::endl;
+    m1.writeNumObjectsOrAmountOfSubscribers(2.5);
+    std::cout << std::endl;
+
+    std::cout << "Udskrivning af totale antal af subscribers tilkoblet mData objekter" << std::endl;
+    m1.writeNumObjectsOrAmountOfSubscribers("hej");
+
+    std::cout << "Tilføjer to nye subscribers til mData1, og laver et nyt mData objekt m3" << std::endl;
+
+    m1.addSubscriber(&sub5);
+    m1.addSubscriber(&sub6);
+    manipulateData m3;
+
+    std::cout << "Udskrivning af totale antal mData objekter" << std::endl;
+    m1.writeNumObjectsOrAmountOfSubscribers(2.5);
+    std::cout << std::endl;
+
+    std::cout << "Udskrivning af totale antal af subscribers tilkoblet mData objekter" << std::endl;
+    m1.writeNumObjectsOrAmountOfSubscribers("hej");
+    std::cout << std::endl;
+
+    std::cout << "For each ved brug af binding" << std::endl;
+    m1.bind_to_for_each();
 }
