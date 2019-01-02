@@ -24,19 +24,11 @@ void testImuSensor();
 
 
 int main() {
-
-    //testSpeed();
-    //testLength();
-    //testUltraSonicSensor();
-    //testImuSensor();
-    //testSensorData();
-    //testDist();
-    //testDataPlotter();
+    // Demonstration af system
     testSystem();
-    //testRegulator();
+
+    // Demonstration af manipulateData klassen
     //manipulateData_();
-
-
 
     return 0;
 }
