@@ -74,11 +74,13 @@ public:
 
     template<class T> int writeNumObjectsOrAmountOfSubscribers(T x)
     {
+        /*
         manipulateData m1;
         boost::variant< int, std::string > IDvariantInType(x);
         int result = boost::apply_visitor( m1, IDvariantInType );
         std::cout << result << std::endl;
         return result;
+         */
     }
 
 private:

@@ -22,7 +22,7 @@ void apk::Regulator::controlLoop(){
     }
 }
 
-void apk::Regulator::imuSensorSignal(Imu::ReturnType data){
+void apk::Regulator::imuSensorSignal(ImuSensor::ReturnType data){
     imuData = data;
 }
 

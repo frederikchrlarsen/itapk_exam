@@ -4,7 +4,7 @@
 #include "Subscriber.h"
 #include "Distributor.h"
 #include "DataPlotter.h"
-#include "Imu.h"
+#include "ImuSensor.h"
 #include "Sensor.h"
 #include "UltraSonicSensor.h"
 #include "manipulateData.h"
@@ -29,14 +29,17 @@ void testSystem();
 
 void manipulateData_();
 
+void testImuSensor();
+
 int main() {
 
     //testSpeed();
     //testLength();
     //testUltraSonicSensor();
+    testImuSensor();
     //testSensorData();
     //testDist();
-    testDataPlotter();
+    //testDataPlotter();
     //testSystem();
     //testRegulator();
 
@@ -52,8 +55,8 @@ void testSystem(){
     apk::DataPlotter dataPlotter(24);
     dataPlotter.startLoop();
 
-    // Instantiate an Imu sensor
-    auto* imu = new apk::Imu;
+    // Instantiate an ImuSensor sensor
+    auto* imu = new apk::ImuSensor;
 
     // Instantiate an UltraSonic sensor
     auto* ultraSonicSensor = new apk::UltraSonicSensor;
@@ -98,8 +101,8 @@ void testDist(){
 
     // The sensor interface
     apk::Sensor* imu;
-    // Instantiate an Imu sensor
-    imu = new apk::Imu;
+    // Instantiate an ImuSensor sensor
+    imu = new apk::ImuSensor;
 
     apk::Sensor* ultraSonicSensor;
     ultraSonicSensor = new apk::UltraSonicSensor;
@@ -118,7 +121,7 @@ void testDist(){
     // Connect to the sensor
     //imu->connect();
 
-    // Let the Imu thread run and disconnect after
+    // Let the ImuSensor thread run and disconnect after
     std::this_thread::sleep_for(std::chrono::milliseconds(2500));
     dist.connectToSensor(&sub2, imu);
     std::this_thread::sleep_for(std::chrono::milliseconds(2500));
@@ -150,10 +153,6 @@ void testDist(){
 
 
 }
-
-
-
-
 
 void testLength() {
     using namespace apk::literals;
@@ -265,8 +264,8 @@ void testDataPlotter(){
 
     // The sensor interface
     apk::Sensor* imu;
-    // Instantiate an Imu sensor
-    imu = new apk::Imu;
+    // Instantiate an ImuSensor sensor
+    imu = new apk::ImuSensor;
 
     apk::Sensor* ultraSonicSensor;
     ultraSonicSensor = new apk::UltraSonicSensor;
@@ -283,7 +282,7 @@ void testDataPlotter(){
     // Connect to the sensor
     //imu->connect();
 
-    // Let the Imu thread run and disconnect after
+    // Let the ImuSensor thread run and disconnect after
     ultraSonicSensorPtr->setSampleRate(apk::UltraSonicSensor::SampleRate::HZ_10);
     std::this_thread::sleep_for(std::chrono::milliseconds(2500));
     dist.connectToSensor(&sub2, imu);
@@ -310,8 +309,8 @@ void testRegulator() {
 
     apk::DataPlotter dataPlotter(24);
 
-    // Instantiate an Imu sensor
-    auto *imu = new apk::Imu;
+    // Instantiate an ImuSensor sensor
+    auto *imu = new apk::ImuSensor;
 
     // Instantiate an UltraSonic sensor
     auto *ultraSonicSensor = new apk::UltraSonicSensor;
@@ -386,4 +385,37 @@ void manipulateData_()
 
     std::cout << "For each ved brug af binding" << std::endl;
     m1.bind_to_for_each();
+}
+
+void testImuSensor(){
+
+    apk::Distributor dist;
+
+    apk::Regulator sub1;
+    sub1.run();
+
+    // The sensor interface
+    auto imuSensor = new apk::ImuSensor;
+
+
+    dist.addSensor(imuSensor);
+    dist.connectSensor(imuSensor);
+    dist.connectToSensor(&sub1, imuSensor);
+
+    // Connect to the sensor
+    //imu->connect();
+
+    // Let the ImuSensor thread run and disconnect after
+    std::this_thread::sleep_for(std::chrono::milliseconds(2500));
+    imuSensor->setSampleRate(apk::ImuSensor::SampleRate::HZ_10);
+    std::this_thread::sleep_for(std::chrono::milliseconds(2500));
+    //dist.removeSubscriber(&sub2);
+    //dist.disconnectFromSensor(&sub1, ultraSonicSensor);
+    //dist.disconnectFromSensor(&sub1, ultraSonicSensor);
+    std::this_thread::sleep_for(std::chrono::milliseconds(2500));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2500*7));
+
+    //imu->disconnect();
+
+
 }

@@ -17,7 +17,7 @@ add_executable(itapk_exam
         main.cpp
         src/Sensor.cpp
         include/Sensor.h
-        include/sensors/Imu.h
+        include/sensors/ImuSensor.h
         include/Distributor.h
         include/Subscriber.h
         src/Distributor.cpp
@@ -34,7 +34,7 @@ add_executable(itapk_exam
         src/manipulateData.cpp
         include/Regulator.h
         src/Regulator.cpp
-        )
+        src/ImuSensor.cpp)
 
 target_link_libraries(itapk_exam ${CMAKE_THREAD_LIBS_INIT} ${Boost_LIBRARIES})
 

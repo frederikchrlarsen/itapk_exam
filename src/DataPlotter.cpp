@@ -14,7 +14,7 @@ void apk::DataPlotter::ultraSonicSensorSignal(UltraSonicSensor::ReturnType data)
     }
 }
 
-void apk::DataPlotter::imuSensorSignal(Imu::ReturnType data) {
+void apk::DataPlotter::imuSensorSignal(ImuSensor::ReturnType data) {
 
 }
 

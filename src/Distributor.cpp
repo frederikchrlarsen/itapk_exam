@@ -33,6 +33,10 @@ void apk::Distributor::connectToSensor(apk::Subscriber *sub, sensorPtrType senso
                 break;
             }
             case apk::Sensor::IMU:{
+                auto boostMethod = boost::bind(&apk::Subscriber::imuSensorSignal, sub, _1);
+
+                subSensorConMap_.insert(std::make_pair(key, this->imuSensorSignal_.connect(boostMethod)));
+
                 break;
             }
             default:{
@@ -92,7 +96,9 @@ void apk::Distributor::connectSensor(sensorPtrType sensor) {
                 break;
             }
             case apk::Sensor::IMU :{
+                auto imu = (apk::ImuSensor*) sensor;
 
+                imu->connectSignal(imuSensorSignal_);
             }
             default:{
                 //TODO Error handling

@@ -44,6 +44,8 @@ namespace apk{
 
         UltraSonicSensor::SignalType ultraSonicSensorSignal_;
 
+        apk::ImuSensor::SignalType imuSensorSignal_;
+
         conMapType subSensorConMap_;
 
     };

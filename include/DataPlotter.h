@@ -42,7 +42,7 @@ public:
 
     void updateUltraDisplay() const;
 
-    void imuSensorSignal(Imu::ReturnType data) override;
+    void imuSensorSignal(ImuSensor::ReturnType data) override;
 
     void ultraSonicSensorSignal(UltraSonicSensor::ReturnType data) override;
 
