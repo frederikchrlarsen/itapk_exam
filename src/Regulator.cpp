@@ -2,6 +2,8 @@
 // Created by Taise on 29/12/2018.
 //
 
+#include <Regulator.h>
+
 #include "Regulator.h"
 
 apk::Regulator::Regulator(int regulateRateHZ) {
@@ -40,17 +42,30 @@ void apk::Regulator::controlLoop(){
 }
 
 void apk::Regulator::imuSensorSignal(ImuSensor::ReturnType data){
-    std::cout << "Got new IMU data: " << data << std::endl;
+    if (running_) {
+        std::cout << "Got new IMU data: " << data << std::endl;
+    }
     imuData = data;
 }
 
 void apk::Regulator::ultraSonicSensorSignal(UltraSonicSensor::ReturnType data){
-    std::cout << "Got new UltraSonicSensor data: " << data << std::endl;
+    if(running_) {
+        std::cout << "Got new UltraSonicSensor data: " << data << std::endl;
+    }
     ultraSonicData = data;
 }
 
 void apk::Regulator::doAdvancedRegulationAlgorithms(){
     std::cout << "Regulating with data Length: " << ultraSonicData << " and imu: " << imuData << std::endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
+
+void apk::Regulator::stop() {
+    running_ = false;
+}
+
+void apk::Regulator::run() {
+    running_ = true;
+    std::thread(&apk::Regulator::controlLoop, this).detach();
 }
 

@@ -32,8 +32,8 @@ int main() {
     //testSensorData();
     //testDist();
     //testDataPlotter();
-    //testSystem();
-    testRegulator();
+    testSystem();
+    //testRegulator();
     //manipulateData_();
 
 
@@ -41,32 +41,86 @@ int main() {
     return 0;
 }
 void testSystem(){
+    // Distributor to handle data connections
     apk::Distributor dist;
 
-    apk::DataPlotter dataPlotter(24);
-    dataPlotter.startLoop();
+    // Subscribers who want data
+    apk::DataPlotter dataPlotter(24); // 10 Hz
+    apk::Regulator regulator(2); // Regulator 2 hz
 
-    // Instantiate sensors
+    // Instantiate sensors to provide data
     auto* imu = new apk::ImuSensor;
     auto* ultraSonicSensor = new apk::UltraSonicSensor;
 
+    // Add sensors to distributor to known list
     dist.addSensor(ultraSonicSensor);
-    // Set options
+    dist.addSensor(imu);
+
+    // Add sensors (USB like connection)
+    dist.connectSensor(ultraSonicSensor);
+    dist.connectSensor(imu);
+
+    // Set options USS
     ultraSonicSensor->setSampleRate(apk::UltraSonicSensor::SampleRate::HZ_10);
     ultraSonicSensor->setDistanceType(apk::UltraSonicSensor::DistanceType::METER);
 
-    dist.connectSensor(ultraSonicSensor);
+    // Connection between dataplotter and sensors
     dist.connectToSensor(&dataPlotter, ultraSonicSensor);
     // Oops connected twice - We can handle that
     dist.connectToSensor(&dataPlotter, ultraSonicSensor);
-
-    dist.addSensor(imu);
-    dist.connectSensor(imu);
     dist.connectToSensor(&dataPlotter, imu);
 
+    // Connection between regulator and sensors
+    dist.connectToSensor(&regulator, ultraSonicSensor);
+    dist.connectToSensor(&regulator   , imu);
+
+    // Turn on data plotter
+    std::cout << std::endl << "# # # # # # # # # # # # # # # # # # # # # # # # " << std::endl;
+    std::cout << "           Turning ON Regulator." << std::endl;
+    std::cout << "# # # # # # # # # # # # # # # # # # # # # # # # " << std::endl << std::endl;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    regulator.run();
     // Let program run a bit before changing sampletime.
     std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+    regulator.stop();
+
+    std::cout << std::endl << "# # # # # # # # # # # # # # # # # # # # # # # # " << std::endl;
+    std::cout << "           Turning OFF Regulator." << std::endl;
+    std::cout << "# # # # # # # # # # # # # # # # # # # # # # # # " << std::endl << std::endl;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+
+    std::cout << std::endl << "# # # # # # # # # # # # # # # # # # # # # # # # " << std::endl;
+    std::cout << "           Turning on dataPlotter." << std::endl;
+    std::cout << "# # # # # # # # # # # # # # # # # # # # # # # # " << std::endl << std::endl;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    dataPlotter.startLoop();
+    // Let program run a bit before changing sampletime.
+    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+
+    dataPlotter.stopLoop();
+
+    std::cout << std::endl << "# # # # # # # # # # # # # # # # # # # # # # # # " << std::endl;
+    std::cout << "           Turning OFF dataPlotter." << std::endl;
+    std::cout << "# # # # # # # # # # # # # # # # # # # # # # # # " << std::endl << std::endl;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+
+    std::cout << std::endl << "# # # # # # # # # # # # # # # # # # # # # # # # " << std::endl;
+    std::cout << "Change sampleFrekvens of USS and turning ON Regulator." << std::endl;
+    std::cout << "# # # # # # # # # # # # # # # # # # # # # # # # " << std::endl << std::endl;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
     ultraSonicSensor->setSampleRate(apk::UltraSonicSensor::SampleRate::HZ_2);
+    regulator.run();
+    std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+    regulator.stop();
+
+    std::cout << std::endl << "# # # # # # # # # # # # # # # # # # # # # # # # " << std::endl;
+    std::cout << "You have now seen that we can change data sensors and receivers on/off without problems. \n\nProgram terminating." << std::endl;
+    std::cout << "# # # # # # # # # # # # # # # # # # # # # # # # " << std::endl << std::endl;
 
     std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 
@@ -304,6 +358,12 @@ void testRegulator() {
     dist.addSensor(imu);
     dist.connectSensor(imu);
     dist.connectToSensor(&regulator, imu);
+    std::this_thread::sleep_for(std::chrono::milliseconds(6000));
+    regulator.stop();
+    std::cout << "Regulator stopped." << std::endl;
+    std::this_thread::sleep_for(std::chrono::milliseconds(6000));
+    std::cout << "Regulator restarted." << std::endl;
+    regulator.run();
     std::this_thread::sleep_for(std::chrono::milliseconds(6000));
 }
 
