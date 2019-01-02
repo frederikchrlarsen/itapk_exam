@@ -6,12 +6,6 @@
 
 #include "DataPlotter.h"
 
-
-
-apk::DataPlotter::imuBuffer* apk::DataPlotter::getImuData(){
-    return &imuData_;
-}
-
 void apk::DataPlotter::ultraSonicSensorSignal(UltraSonicSensor::ReturnType data) {
     try {
         ultraSonicBuffer_.push_back(data);

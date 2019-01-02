@@ -5,16 +5,6 @@
 //
 
 #include "manipulateData.h"
-#include <Sensor.h>
-#include <Subscriber.h>
-#include <string>
-#include <boost/lexical_cast.hpp>
-#include <boost/uuid/uuid_io.hpp>
-#include <boost/bind.hpp>
-#include <boost/function.hpp>
-#include <c++/8.1.0/numeric>
-#include<cstdio>
-#include<cstdlib>
 
 
 //using namespace std::placeholders;
