@@ -40,15 +40,17 @@ void apk::Regulator::controlLoop(){
 }
 
 void apk::Regulator::imuSensorSignal(ImuSensor::ReturnType data){
+    std::cout << "Got new IMU data: " << data << std::endl;
     imuData = data;
 }
 
 void apk::Regulator::ultraSonicSensorSignal(UltraSonicSensor::ReturnType data){
+    std::cout << "Got new UltraSonicSensor data: " << data << std::endl;
     ultraSonicData = data;
 }
 
 void apk::Regulator::doAdvancedRegulationAlgorithms(){
-    std::cout << "Got data Length: " << ultraSonicData << " and imu: " << imuData << std::endl;
+    std::cout << "Regulating with data Length: " << ultraSonicData << " and imu: " << imuData << std::endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
