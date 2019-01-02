@@ -134,7 +134,6 @@ void testDist(){
 
     std::cout << imu->test() << std::endl;
 
-
 /*
     apk::DataPlotter sub3, sub4;
 

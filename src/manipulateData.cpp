@@ -66,11 +66,16 @@ void manipulateData::accumulate()
 {
     std::list<std::string> checkAccumulation;
     transformAllIDsToString(checkAccumulation);
-
 }
 
-void manipulateData::transformAllIDsToString(std::list<std::string>& checkAccumulation) {
+void manipulateData::transformAllIDsToString(std::list<std::string> &checkAccumulation) {
 
+    //Error code hvis nedenstående bruges i stedet for at sende en listen med en reference - hvorfor?
+    //Og error code på imaget?
+    /*
+    std::list<std::string> checkAccumulation;
+    transformAllIDsToString(checkAccumulation);
+    */
     std::string tmp_2;
     std::vector<int> VectorOfNumbersInId;
 
