@@ -30,7 +30,7 @@ void apk::DataPlotter::imuSensorSignal(UltraSonicSensor::ReturnType data) {
 
 }
 
-apk::DataPlotter::DataPlotter(unsigned int frameRate):
+apk::DataPlotter::DataPlotter(double frameRate):
 frameRate_(frameRate),
 sleepTime_(calculateSleepTime(frameRate_))
 {
@@ -44,8 +44,8 @@ sleepTime_(calculateSleepTime(frameRate_))
 
 }
 
-std::chrono::seconds apk::DataPlotter::calculateSleepTime(unsigned int frequency) const {
-    return std::chrono::seconds(1/frequency);
+std::chrono::duration<double> apk::DataPlotter::calculateSleepTime(double frequency) const {
+    return std::chrono::duration<double>(1/std::abs(frequency));
 }
 
 void apk::DataPlotter::loop() {
@@ -128,8 +128,8 @@ void apk::DataPlotter::clearConsole() const {
     #if defined _WIN32
         printf("%s%s", "\33[", "31m");
     #elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
-        printf("\033[2J");
-        //system("clear");
+        //printf("\033[2J");
+        system("clear");
     #elif defined (__APPLE__)
         system("clear");
     #endif

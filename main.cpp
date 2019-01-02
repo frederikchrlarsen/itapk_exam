@@ -221,7 +221,7 @@ void testSensorData(){
 void testDataPlotter(){
     apk::Distributor dist;
 
-    apk::DataPlotter sub1(1), sub2(10);
+    apk::DataPlotter sub1(24), sub2(10);
     sub1.startLoop();
 
     // The sensor interface

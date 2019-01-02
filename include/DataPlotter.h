@@ -31,10 +31,10 @@ public:
 
     DataPlotter();
 
-    DataPlotter(unsigned int frameRate);
+    DataPlotter(double frameRate);
     ~DataPlotter();
 
-    std::chrono::seconds calculateSleepTime(unsigned int frequency) const;
+    std::chrono::duration<double> calculateSleepTime(double frequency) const;
 
     void startLoop();
 
@@ -63,8 +63,8 @@ private:
     void loop();
     void updateData();
 
-    unsigned int frameRate_;
-    std::chrono::seconds sleepTime_;
+    double frameRate_;
+    std::chrono::duration<double> sleepTime_;
     bool loopRunning_ = false;
     std::promise<bool> dataGenPromise_;
     std::future<bool> dataGenFuture_;
