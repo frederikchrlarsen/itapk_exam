@@ -10,12 +10,17 @@
 #include <thread>
 #include <sensors/ImuSensor.h>
 #include "Subscriber.h"
-//#include "UltraSonicSensor.h
+#include <boost/thread.hpp>
+
+
+// REF: Inspiration for timer from https://www.boost.org/doc/libs/1_69_0/doc/html/boost_asio/tutorial/tuttimer3/src.html
 
 namespace apk {
+
     class Regulator : public Subscriber {
     public:
-        Regulator();
+        Regulator(int regulateRateHZ);
+        ~Regulator();
 
         void imuSensorSignal(apk::ImuSensor::ReturnType data) override;
 
@@ -25,12 +30,22 @@ namespace apk {
             running_ = true;
             std::thread(&apk::Regulator::controlLoop, this).detach();
         }
+
     private:
         void controlLoop();
 
-        Length ultraSonicData=10_m;
         ImuSensor::ReturnType imuData = 12.2;
+        void doAdvancedRegulationAlgorithms();
+        UltraSonicSensor::ReturnType ultraSonicData = 10_m;
+        int regulateRateHZ_;
         bool running_ = false;
+        boost::mutex threadMut_;
+    };
+
+    struct RegulatorFailure : std::exception{
+        const char * what () const noexcept override {
+            return "Regulator loop too slow! Descrease algorithm evaluation time or decrease regulation HZ.";
+        }
     };
 }
 /*void testRegulator(){
