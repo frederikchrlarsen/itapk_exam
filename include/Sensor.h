@@ -26,8 +26,6 @@ namespace apk{
                 return __PRETTY_FUNCTION__;
             };
 
-            virtual void addCallback(std::function<void(boost::any)>){};
-
             virtual SensorType getSensorType() const = 0;
 
             virtual void connect() {

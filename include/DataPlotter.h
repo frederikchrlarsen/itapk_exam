@@ -32,21 +32,22 @@ public:
 
     ~DataPlotter();
 
-    std::chrono::duration<double> calculateSleepTime(double frequency) const;
 
     void startLoop();
 
     void stopLoop();
-
-    void clearConsole() const;
-
-    void updateUltraDisplay() const;
 
     void imuSensorSignal(ImuSensor::ReturnType data) override;
 
     void ultraSonicSensorSignal(UltraSonicSensor::ReturnType data) override;
 
 private:
+
+    std::chrono::duration<double> calculateSleepTime(double frequency) const;
+
+    void clearConsole() const;
+
+    void updateUltraDisplay() const;
 
     void loop();
 

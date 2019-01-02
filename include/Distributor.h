@@ -40,7 +40,7 @@ namespace apk{
 
         bool isSensorInList(sensorPtrType sensor);
 
-        std::list<sensorPtrType> sensor_;
+        std::list<sensorPtrType> sensorList_;
 
         UltraSonicSensor::SignalType ultraSonicSensorSignal_;
 

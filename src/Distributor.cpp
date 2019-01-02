@@ -69,11 +69,11 @@ void apk::Distributor::disconnectFromSensor(apk::Subscriber *sub, sensorPtrType 
 }
 
 void apk::Distributor::addSensor(sensorPtrType sensor) {
-    this->sensor_.push_back(sensor);
+    this->sensorList_.push_back(sensor);
 }
 
 void apk::Distributor::removeSensor(sensorPtrType sensor) {
-    this->sensor_.remove(sensor);
+    this->sensorList_.remove(sensor);
 }
 
 void apk::Distributor::connectSensor(sensorPtrType sensor) {
@@ -120,7 +120,7 @@ void apk::Distributor::disconnectSensor(sensorPtrType sensor) {
 
 bool apk::Distributor::isSensorInList(sensorPtrType sensor) {
     //Return true if the Sensor is found in the list, otherwise false
-    return (std::find(this->sensor_.begin(), this->sensor_.end(), sensor) != this->sensor_.end());
+    return (std::find(this->sensorList_.begin(), this->sensorList_.end(), sensor) != this->sensorList_.end());
 }
 
 std::list<apk::Distributor::sensorPtrType> apk::Distributor::getSensorList() {
