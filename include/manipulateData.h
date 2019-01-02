@@ -1,6 +1,5 @@
 
 
-
 // Created by Jens on 28-12-2018.
 //
 
@@ -28,12 +27,17 @@ public:
         amountOfManipulateDataObjects++;
     }
 
-    int operator ()(const int variant)
+    ~manipulateData()
+    {
+        amountOfManipulateDataObjects--;
+    }
+
+    int operator ()(int variant) const
     {
         return  amountOfManipulateDataObjects -1;
     };
 
-    int operator()(const std::string)
+    int operator()(std::string & variant) const
     {
         return amountOfAttachedSubscribers;
     }
@@ -43,9 +47,6 @@ public:
 
     //bruger std::for_each med lambda-expression til at skrive alle ikke-konverterede boost ID'er ud
     void forEach();
-
-    //bruger std::transform for at sætte det nuværende manipulateData-objekt lig med det modtagne
-    void transform(manipulateData *man_);
 
     //Gør som transform() uden at bruge lambda expression
     void copy(manipulateData *man_);
@@ -58,10 +59,8 @@ public:
     void accumulate();
 
     //Konverterer ID'er for alle tilkoblede subscribers til strings
-    void transformAllIDsToString();
+    void transformAllIDsToString(std::list<std::string>);
 
-    //Konverterer ID'er for alle tilkoblede subscribers til strings men lægger dem ikke sammen undervejs
-    void transformIdsToString();
 
     int getAccumulatedID()
     {
@@ -71,24 +70,21 @@ public:
     static int amountOfManipulateDataObjects;
     static int amountOfAttachedSubscribers;
 
+    //Bruger boost::variant og boost:apply_visitor for at vælge mellem operators()
+
     template<class T> int writeNumObjectsOrAmountOfSubscribers(T x)
     {
+        manipulateData m1;
         boost::variant< int, std::string > IDvariantInType(x);
-        int result = boost::apply_visitor( manipulateData(), IDvariantInType );
-        std::cout << result;
+        int result = boost::apply_visitor( m1, IDvariantInType );
+        std::cout << result << std::endl;
         return result;
     }
 
 private:
 
     int accumulatedId = 0;
-    std::list<std::string> idsInString;
-    std::list<std::string> checkAccumulation;
     std::list<apk::Subscriber*> subscriber;
-    std::vector<int> VectorOfNumbersInId;
-    std::string accumulatedIdInString;
-
-
 
 };
 

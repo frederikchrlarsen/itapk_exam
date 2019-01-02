@@ -5,7 +5,16 @@
 //
 
 #include "manipulateData.h"
-
+#include <Sensor.h>
+#include <Subscriber.h>
+#include <string>
+#include <boost/lexical_cast.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <boost/bind.hpp>
+#include <boost/function.hpp>
+#include <numeric>
+#include<cstdio>
+#include<cstdlib>
 
 //using namespace std::placeholders;
 
@@ -33,14 +42,6 @@ void manipulateData::forEach() {
     });
 }
 
-void manipulateData::transform(manipulateData *man_) {
-
-    std::transform(subscriber.begin(), subscriber.end(), man_->subscriber.begin(), [](apk::Subscriber* & subscriber_)
-    {
-        return subscriber_;
-    });
-}
-
 void manipulateData::copy(manipulateData *man_) {
 
     std::copy(subscriber.begin(), subscriber.end(), man_->subscriber.begin());
@@ -63,45 +64,31 @@ void manipulateData::bind_to_for_each()
 
 void manipulateData::accumulate()
 {
-    transformAllIDsToString();
+    std::list<std::string> checkAccumulation;
+    transformAllIDsToString(checkAccumulation);
 
-    accumulatedIdInString = checkAccumulation.back();
-    //std::cout << accumulatedInString << std::endl;
+}
+
+void manipulateData::transformAllIDsToString(std::list<std::string> checkAccumulation) {
+
+    std::string tmp_2;
+    std::vector<int> VectorOfNumbersInId;
+
+    std::transform(subscriber.begin(), subscriber.end(), checkAccumulation.begin(), [tmp_2](apk::Subscriber* &subscriber_)
+            mutable -> std::string
+    {
+        tmp_2 += boost::lexical_cast<std::string>(subscriber_->getId());
+        return tmp_2;
+    });
+
+    std::string accumulatedIdInString = checkAccumulation.back();
 
     for (char &it : accumulatedIdInString) {
         if(isdigit(it))
         {
             VectorOfNumbersInId.push_back(static_cast<int>(it));
-            //std::cout << static_cast<int>(*it);
-            //std::cout << std::endl;
         }
     }
     accumulatedId = std::accumulate(VectorOfNumbersInId.begin(), VectorOfNumbersInId.end(), 0);
-    std::cout << "Accumulated ID: " << accumulatedId << std::endl;
-}
-
-void manipulateData::transformAllIDsToString() {
-    std::string tmp_2;
-
-    std::transform(subscriber.begin(), subscriber.end(), checkAccumulation.begin(), [tmp_2](apk::Subscriber *&subscriber_)
-            mutable -> std::string
-    {
-        tmp_2 += boost::lexical_cast<std::string>(subscriber_->getId());
-
-        return tmp_2;
-    });
-}
-
-
-void manipulateData::transformIdsToString() {
-    std::string tmp;
-    std::string final_string_tmp;
-
-    std::transform(subscriber.begin(), subscriber.end(), idsInString.begin(), [tmp, final_string_tmp](apk::Subscriber* & subscriber_)
-            mutable -> std::string
-    {
-        tmp = boost::lexical_cast<std::string>(subscriber_->getId());
-
-        return tmp;
-    });
+    std::cout << accumulatedId << std::endl;
 }
