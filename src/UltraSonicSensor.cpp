@@ -76,8 +76,8 @@ apk::UltraSonicSensor::ReturnType apk::UltraSonicSensor::generateSine(timePointT
     double t = timeElapsedMs.count()/1000.0;
     double fs = 0.3;
 
-    ReturnType l(std::sin(t*2*M_PI*fs)+1, distanceType_);
-    return l;
+    ReturnType length(std::sin(t*2*M_PI*fs)+1, distanceType_);
+    return length;
 }
 
 

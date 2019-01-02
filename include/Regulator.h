@@ -34,12 +34,11 @@ namespace apk {
     private:
         void controlLoop();
         void doAdvancedRegulationAlgorithms();
-        Length ultraSonicData = 10_m;
+        UltraSonicSensor::ReturnType ultraSonicData = 10_m;
         Imu::ReturnType imuData = 12.2;
         int regulateRateHZ_;
         bool running_ = false;
         boost::mutex threadMut_;
-
     };
 
     struct RegulatorFailure : std::exception{
