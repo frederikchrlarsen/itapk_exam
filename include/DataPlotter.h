@@ -17,7 +17,6 @@ namespace apk{
 
 class DataPlotter: public Subscriber {
 
-
 public:
 
     struct DataOverflow : public std::exception
@@ -43,7 +42,7 @@ public:
 
     void updateUltraDisplay() const;
 
-    void imuSensorSignal(UltraSonicSensor::ReturnType data) override;
+    void imuSensorSignal(Imu::ReturnType data) override;
 
     void ultraSonicSensorSignal(UltraSonicSensor::ReturnType data) override;
 
@@ -67,8 +66,6 @@ private:
     unsigned int x_ = 30, y_ = 30;
 
 };
-
-
 
 }
 

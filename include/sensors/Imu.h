@@ -13,15 +13,16 @@
 
 namespace apk{
 
-template <class T>
 class Imu: public apk::Sensor {
 
 public:
+    typedef float ReturnType;
+
     Imu():sensorType_(apk::Sensor::SensorType::IMU){
         std::cout << __PRETTY_FUNCTION__ << std::endl;
     }
 
-    explicit Imu(std::function<void(T)> callback){
+    explicit Imu(std::function<void(ReturnType)> callback){
         std::cout << __PRETTY_FUNCTION__ << std::endl;
         dataCallback.push_back(callback);
     }
@@ -56,8 +57,8 @@ private:
     apk::Sensor::SensorType sensorType_;
     bool connected = true;
     //std::mutex mutex_connect;
-    int counter = 0;
-    std::list<std::function<void(T)>> dataCallback;
+    ReturnType counter = 0;
+    std::list<std::function<void(ReturnType)>> dataCallback;
 
 };
 

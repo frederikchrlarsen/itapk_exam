@@ -20,7 +20,7 @@ void apk::DataPlotter::ultraSonicSensorSignal(UltraSonicSensor::ReturnType data)
     }
 }
 
-void apk::DataPlotter::imuSensorSignal(UltraSonicSensor::ReturnType data) {
+void apk::DataPlotter::imuSensorSignal(Imu::ReturnType data) {
 
 }
 
@@ -103,9 +103,9 @@ void apk::DataPlotter::updateUltraDisplay() const {
             //if()
 
             if(i == y_)
-                std::cout << "•";
+                std::cout << "#";
             else
-                std::cout << (d >= 1.0/i ? "•" :" ");
+                std::cout << (d >= 1.0/i ? "#" :" ");
 
         });
         std::cout << std::endl;
@@ -122,7 +122,7 @@ void apk::DataPlotter::updateUltraDisplay() const {
 void apk::DataPlotter::clearConsole() const {
     //https://stackoverflow.com/questions/6486289/how-can-i-clear-console
     #if defined _WIN32
-        printf("%s%s", "\33[", "31m");
+        system("CLS");
     #elif defined (__LINUX__) || defined(__gnu_linux__) || defined(__linux__)
         //printf("\033[2J");
         system("clear");

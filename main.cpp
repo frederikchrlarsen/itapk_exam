@@ -9,7 +9,9 @@
 #include "UltraSonicSensor.h"
 #include "manipulateData.h"
 #include "SensorData.h"
+#include "Regulator.h"
 
+void testRegulator();
 
 void testDist();
 
@@ -23,6 +25,8 @@ void testSensorData();
 
 void testDataPlotter();
 
+void testSystem();
+
 int main() {
 
     //testSpeed();
@@ -31,9 +35,9 @@ int main() {
     //testSensorData();
     //testDist();
     //testDataPlotter();
-
-
-
+    //testSystem();
+    testRegulator();
+/*
     apk::DataPlotter sub3, sub4;
 
     manipulateData m1, m2;
@@ -45,9 +49,52 @@ int main() {
     std::cout << std::endl << m1.getAccumulatedID() << std::endl;
 
     m1.writeNumObjectsOrAmountOfSubscribers(2.5);
-
+*/
 
     return 0;
+}
+void testSystem(){
+    apk::Distributor dist;
+
+    apk::DataPlotter dataPlotter(24);
+    dataPlotter.startLoop();
+
+    // Instantiate an Imu sensor
+    auto* imu = new apk::Imu;
+
+    // Instantiate an UltraSonic sensor
+    auto* ultraSonicSensor = new apk::UltraSonicSensor;
+
+    dist.addSensor(ultraSonicSensor);
+    // Set options
+    ultraSonicSensor->setSampleRate(apk::UltraSonicSensor::SampleRate::HZ_5);
+    ultraSonicSensor->setDistanceType(apk::UltraSonicSensor::DistanceType::METER);
+
+    dist.connectSensor(ultraSonicSensor);
+    dist.connectToSensor(&dataPlotter, ultraSonicSensor);
+    //dist.connectToSensor(&dataPlotter, ultraSonicSensor);
+
+    dist.addSensor(imu);
+    dist.connectSensor(imu);
+    dist.connectToSensor(&dataPlotter, imu);
+
+    // Let program run a bit before changing sampletime.
+    std::this_thread::sleep_for(std::chrono::milliseconds(2500));
+    ultraSonicSensor->setSampleRate(apk::UltraSonicSensor::SampleRate::HZ_10);
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(2500));
+    //dist.connectToSensor(&sub2, imu);
+    std::this_thread::sleep_for(std::chrono::milliseconds(2500));
+    //dist.removeSubscriber(&sub2);
+    //dist.disconnectFromSensor(&sub1, ultraSonicSensor);
+    //dist.disconnectFromSensor(&sub1, ultraSonicSensor);
+    std::this_thread::sleep_for(std::chrono::milliseconds(2500));
+    dist.disconnectSensor(imu);
+    std::this_thread::sleep_for(std::chrono::milliseconds(2500*7));
+
+    //imu->disconnect();
+
+    std::cout << imu->test() << std::endl;
 }
 
 void testDist(){
@@ -59,7 +106,7 @@ void testDist(){
     // The sensor interface
     apk::Sensor* imu;
     // Instantiate an Imu sensor
-    imu = new apk::Imu<float>;
+    imu = new apk::Imu;
 
     apk::Sensor* ultraSonicSensor;
     ultraSonicSensor = new apk::UltraSonicSensor;
@@ -227,7 +274,7 @@ void testDataPlotter(){
     // The sensor interface
     apk::Sensor* imu;
     // Instantiate an Imu sensor
-    imu = new apk::Imu<float>;
+    imu = new apk::Imu;
 
     apk::Sensor* ultraSonicSensor;
     ultraSonicSensor = new apk::UltraSonicSensor;
@@ -237,8 +284,6 @@ void testDataPlotter(){
     dist.connectSensor(ultraSonicSensor);
     dist.connectToSensor(&sub1, ultraSonicSensor);
     dist.connectToSensor(&sub1, ultraSonicSensor);
-
-
 
     dist.addSensor(imu);
     dist.connectSensor(imu);
@@ -261,4 +306,35 @@ void testDataPlotter(){
     //imu->disconnect();
 
     std::cout << imu->test() << std::endl;
+}
+
+void testRegulator() {
+    apk::Distributor dist;
+
+    apk::Regulator regulator;
+    regulator.run();
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(3100));
+
+    apk::DataPlotter dataPlotter(24);
+
+    // Instantiate an Imu sensor
+    auto *imu = new apk::Imu;
+
+    // Instantiate an UltraSonic sensor
+    auto *ultraSonicSensor = new apk::UltraSonicSensor;
+
+    dist.addSensor(ultraSonicSensor);
+    // Set options
+    ultraSonicSensor->setSampleRate(apk::UltraSonicSensor::SampleRate::HZ_5);
+    ultraSonicSensor->setDistanceType(apk::UltraSonicSensor::DistanceType::METER);
+
+    dist.connectSensor(ultraSonicSensor);
+    dist.connectToSensor(&regulator, ultraSonicSensor);
+    //dist.connectToSensor(&dataPlotter, ultraSonicSensor);
+
+    dist.addSensor(imu);
+    dist.connectSensor(imu);
+    dist.connectToSensor(&regulator, imu);
+    std::this_thread::sleep_for(std::chrono::milliseconds(3100));
 }
