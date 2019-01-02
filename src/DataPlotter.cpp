@@ -52,7 +52,6 @@ void apk::DataPlotter::loop() {
 void apk::DataPlotter::startLoop() {
     loopRunning_ = true;
     std::thread(&apk::DataPlotter::loop, this).detach();
-    dataGenFuture_ = dataGenPromise_.get_future();
 }
 
 void apk::DataPlotter::stopLoop() {
@@ -104,13 +103,6 @@ void apk::DataPlotter::updateUltraDisplay() const {
         });
         std::cout << std::endl;
     }
-
-
-    /*
-    std::copy(ultraSonicData_.begin(), ultraSonicData_.end(),
-            std::ostream_iterator<long double>(std::cout, " "));
-    std::cout << std::endl;
-     */
 }
 
 void apk::DataPlotter::clearConsole() const {

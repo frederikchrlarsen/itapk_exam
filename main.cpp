@@ -36,11 +36,11 @@ int main() {
     //testUltraSonicSensor();
     //testSensorData();
     //testDist();
-    //testDataPlotter();
+    testDataPlotter();
     //testSystem();
     //testRegulator();
 
-    manipulateData_();
+    //manipulateData_();
 
 
 
