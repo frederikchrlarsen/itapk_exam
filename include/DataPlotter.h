@@ -69,10 +69,11 @@ private:
     std::promise<bool> dataGenPromise_;
     std::future<bool> dataGenFuture_;
 
-    apk::SensorData<apk::UltraSonicSensor::ReturnType, 64> ultraSonicBuffer_;
-    std::array<long double, 100> ultraSonicData_ = {0};
-    unsigned int ultraSonicDataSize_ = 100;
+    apk::SensorData<apk::UltraSonicSensor::ReturnType, 10> ultraSonicBuffer_;
+    std::array<long double, 20> ultraSonicData_ = {0};
+    unsigned int ultraSonicDataSize_ = 20;
     unsigned int ultraSonicDataPosition_ = 0;
+    unsigned int x_, y_ = 30;
 
     size_t imuBufferSize_;
     imuBuffer imuData_;
