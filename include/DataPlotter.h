@@ -16,7 +16,6 @@ namespace apk{
 
 class DataPlotter: public Subscriber {
 
-
 public:
 
     struct DataOverflow : public std::exception

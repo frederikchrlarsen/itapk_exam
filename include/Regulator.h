@@ -8,32 +8,34 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include "Subscriber.h"
+//#include "UltraSonicSensor.h
 
-class Regulator {
-public:
-    Regulator()=default;
+namespace apk {
+    class Regulator : public Subscriber {
+    public:
+        Regulator();
 
-    void run(){
-        auto start = std::chrono::high_resolution_clock::now();
-        controlLoop();
+        void imuSensorSignal(UltraSonicSensor::ReturnType data) override;
 
-        auto end = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> diff = end-start;
+        void ultraSonicSensorSignal(UltraSonicSensor::ReturnType data) override;
 
-        std::cout << "Time elapsed: " << diff.count() << "s" << std::endl;
-    }
-private:
-    void controlLoop(){
-        //std::this_thread::sleep_for(50ms);
-    }
-    Length ultraSonicData;
-    Float imuData;
-};
+        void run(){
+            running_ = true;
+            std::thread(&controlLoop, this).detach();
+        }
+    private:
+        void controlLoop();
 
-void testRegulator(){
+        Length ultraSonicData=10_m;
+        float imuData = 12.2;
+        bool running_ = false;
+    };
+}
+/*void testRegulator(){
     Regulator regulator;
     regulator.run();
-}
+}*/
 
 
 #endif //ITAPK_EXAM_REGULATOR_H

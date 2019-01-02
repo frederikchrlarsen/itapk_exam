@@ -32,6 +32,8 @@ add_executable(itapk_exam
         src/UltraSonicSensor.cpp
         include/manipulateData.h
         src/manipulateData.cpp
+        include/Regulator.h
+        src/Regulator.cpp
         )
 
 target_link_libraries(itapk_exam ${CMAKE_THREAD_LIBS_INIT} ${Boost_LIBRARIES})
