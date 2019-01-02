@@ -6,6 +6,7 @@
 #define ITAPK_EXAM_DATAPLOTTER_H
 #define MAX_SIZE 1024
 #define DEFAULT_FPS 30
+#define X_AXIS_LENGTH 100
 
 #include <deque>
 #include "Subscriber.h"
@@ -22,16 +23,14 @@ public:
     struct DataOverflow : public std::exception
     {
         const char * what () const noexcept override {
-            return "Too many elements in the deque";
+            return "Too many elements";
         }
     };
 
-    // TODO Add Imu::returnType
-    typedef std::deque<float> imuBuffer;
-
     DataPlotter();
 
-    DataPlotter(double frameRate);
+    explicit DataPlotter(double frameRate);
+
     ~DataPlotter();
 
     std::chrono::duration<double> calculateSleepTime(double frequency) const;
@@ -48,35 +47,25 @@ public:
 
     void ultraSonicSensorSignal(UltraSonicSensor::ReturnType data) override;
 
-    imuBuffer* getImuData();
-    friend std::ostream& operator<< ( std::ostream& o, apk::DataPlotter& plotter ) {
-        std::deque<float>* que = plotter.getImuData();
-
-        o << "############" << std::endl << "{";
-        std::for_each(que->begin(), que->end(), [&](float &data){ o << data << ", ";});
-
-        return o << "}" << std::endl << "############" << std::endl;
-    }
-
-    void addImuData (float data ) noexcept(false);
 private:
+
     void loop();
+
     void updateData();
 
     double frameRate_;
     std::chrono::duration<double> sleepTime_;
+
     bool loopRunning_ = false;
     std::promise<bool> dataGenPromise_;
     std::future<bool> dataGenFuture_;
 
     apk::SensorData<apk::UltraSonicSensor::ReturnType, 10> ultraSonicBuffer_;
-    std::array<long double, 50> ultraSonicData_ = {0};
-    unsigned int ultraSonicDataSize_ = 50;
+    std::array<long double, X_AXIS_LENGTH> ultraSonicData_ = {0};
+    unsigned int ultraSonicDataSize_ = X_AXIS_LENGTH;
     unsigned int ultraSonicDataPosition_ = 0;
-    unsigned int x_, y_ = 30;
+    unsigned int x_ = 30, y_ = 30;
 
-    size_t imuBufferSize_;
-    imuBuffer imuData_;
 };
 
 

@@ -7,14 +7,8 @@
 #include "DataPlotter.h"
 
 
-void apk::DataPlotter::addImuData(float data) noexcept(false){
-    if(imuData_.size() > MAX_SIZE){
-        throw DataPlotter::DataOverflow();
-    }
-    imuData_.push_back(data);
-}
 
-  apk::DataPlotter::imuBuffer* apk::DataPlotter::getImuData(){
+apk::DataPlotter::imuBuffer* apk::DataPlotter::getImuData(){
     return &imuData_;
 }
 
@@ -32,14 +26,16 @@ void apk::DataPlotter::imuSensorSignal(UltraSonicSensor::ReturnType data) {
 
 apk::DataPlotter::DataPlotter(double frameRate):
 frameRate_(frameRate),
-sleepTime_(calculateSleepTime(frameRate_))
+sleepTime_(calculateSleepTime(frameRate_)),
+dataGenFuture_(dataGenPromise_.get_future())
 {
 
 }
 
 apk::DataPlotter::DataPlotter():
 frameRate_(DEFAULT_FPS),
-sleepTime_(calculateSleepTime(frameRate_))
+sleepTime_(calculateSleepTime(frameRate_)),
+dataGenFuture_(dataGenPromise_.get_future())
 {
 
 }
@@ -92,7 +88,7 @@ void apk::DataPlotter::updateUltraDisplay() const {
     clearConsole();
 
     auto max = *std::max_element(ultraSonicData_.begin(), ultraSonicData_.end());
-    std::array<long double, 50>data(ultraSonicData_);
+    std::array<long double, X_AXIS_LENGTH>data(ultraSonicData_);
     std::cout << "Max: " << max << std::endl;
     if(max > 0){
         //Divide each element in the array by max (Normalize)
