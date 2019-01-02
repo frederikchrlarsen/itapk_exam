@@ -1,3 +1,6 @@
+
+
+
 // Created by Jens on 28-12-2018.
 //
 
@@ -8,9 +11,9 @@
 #include <boost/uuid/uuid_io.hpp>
 #include <boost/bind.hpp>
 #include <boost/function.hpp>
-#include <numeric>
-#include <cstdio>
-#include <cstdlib>
+#include <c++/8.1.0/numeric>
+#include<cstdio>
+#include<cstdlib>
 
 #ifndef ITAPK_EXAM_MANIPULATEDATA_H
 #define ITAPK_EXAM_MANIPULATEDATA_H
@@ -60,16 +63,20 @@ public:
     //Konverterer ID'er for alle tilkoblede subscribers til strings men lægger dem ikke sammen undervejs
     void transformIdsToString();
 
+    int getAccumulatedID()
+    {
+        return accumulatedId;
+    }
 
     static int amountOfManipulateDataObjects;
     static int amountOfAttachedSubscribers;
 
-    template<class T> void writeNumberOfObjectsOrAmountOfSubscribers(T x)
+    template<class T> int writeNumObjectsOrAmountOfSubscribers(T x)
     {
         boost::variant< int, std::string > IDvariantInType(x);
         int result = boost::apply_visitor( manipulateData(), IDvariantInType );
         std::cout << result;
-
+        return result;
     }
 
 private:
@@ -87,3 +94,4 @@ private:
 
 
 #endif //ITAPK_EXAM_DISTRIBUTOR_H
+

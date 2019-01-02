@@ -30,23 +30,23 @@ int main() {
     //testUltraSonicSensor();
     //testSensorData();
     //testDist();
-    testDataPlotter();
+    //testDataPlotter();
 
-    /*
 
-    apk::DataPlotter sub1, sub2;
 
-    manipulateData m1;
-    m1.addSubscriber(&sub1);
-    m1.addSubscriber(&sub2);
+    apk::DataPlotter sub3, sub4;
+
+    manipulateData m1, m2;
+    m1.addSubscriber(&sub3);
+    m1.addSubscriber(&sub4);
+
     m1.forEach();
     m1.accumulate();
+    std::cout << std::endl << m1.getAccumulatedID() << std::endl;
 
-    int accumulatedId = m1();
-    std::cout << std::endl;
-    std::cout << accumulatedId;
+    m1.writeNumObjectsOrAmountOfSubscribers(2.5);
 
-     */
+
     return 0;
 }
 

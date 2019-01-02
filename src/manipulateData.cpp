@@ -1,11 +1,21 @@
 
+
 //
 // Created by Jens on 28-12-2018.
 //
 
-#include <manipulateData.h>
-
 #include "manipulateData.h"
+#include <Sensor.h>
+#include <Subscriber.h>
+#include <string>
+#include <boost/lexical_cast.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <boost/bind.hpp>
+#include <boost/function.hpp>
+#include <c++/8.1.0/numeric>
+#include<cstdio>
+#include<cstdlib>
+
 
 //using namespace std::placeholders;
 
@@ -49,7 +59,6 @@ void manipulateData::copy(manipulateData *man_) {
 
 void manipulateData::bind_to_for_each()
 {
-
     boost::function<void()> for_each_function( boost::bind( &manipulateData::forEach, this));
     for_each_function();
 
@@ -78,6 +87,7 @@ void manipulateData::accumulate()
         }
     }
     accumulatedId = std::accumulate(VectorOfNumbersInId.begin(), VectorOfNumbersInId.end(), 0);
+    std::cout << "Accumulated ID: " << accumulatedId << std::endl;
 }
 
 void manipulateData::transformAllIDsToString() {
