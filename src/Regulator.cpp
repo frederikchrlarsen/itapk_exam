@@ -2,6 +2,8 @@
 // Created by Taise on 29/12/2018.
 //
 
+#include <Regulator.h>
+
 #include "Regulator.h"
 
 apk::Regulator::Regulator(int regulateRateHZ) {
@@ -9,12 +11,17 @@ apk::Regulator::Regulator(int regulateRateHZ) {
     std::cout << "Regulating with " << regulateRateHZ_ << "ms." << std::endl;
 }
 
+apk::Regulator::~Regulator() {
+    running_ = false;
+    boost::mutex::scoped_lock lock(threadMut_);
+}
+
 void apk::Regulator::controlLoop(){
     try {
+        boost::mutex::scoped_lock lock(threadMut_);
+
         while (running_) {
             auto start = std::chrono::high_resolution_clock::now();
-            std::cout << "Time now: " << start.time_since_epoch().count() << std::endl;
-
             doAdvancedRegulationAlgorithms();
 
             auto end = std::chrono::high_resolution_clock::now();
@@ -46,3 +53,4 @@ void apk::Regulator::doAdvancedRegulationAlgorithms(){
     std::cout << "Got data Length: " << ultraSonicData << " and imu: " << imuData << std::endl;
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
+

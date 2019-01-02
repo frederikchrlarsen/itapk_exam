@@ -10,6 +10,7 @@
 #include <thread>
 #include <sensors/Imu.h>
 #include "Subscriber.h"
+#include <boost/thread.hpp>
 
 
 // REF: Inspiration for timer from https://www.boost.org/doc/libs/1_69_0/doc/html/boost_asio/tutorial/tuttimer3/src.html
@@ -19,6 +20,7 @@ namespace apk {
     class Regulator : public Subscriber {
     public:
         Regulator(int regulateRateHZ);
+        ~Regulator();
 
         void imuSensorSignal(Imu::ReturnType data) override;
 
@@ -36,6 +38,7 @@ namespace apk {
         Imu::ReturnType imuData = 12.2;
         int regulateRateHZ_;
         bool running_ = false;
+        boost::mutex threadMut_;
 
     };
 
