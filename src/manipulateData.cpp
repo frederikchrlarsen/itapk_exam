@@ -69,7 +69,7 @@ void manipulateData::accumulate()
 
 }
 
-void manipulateData::transformAllIDsToString(std::list<std::string> checkAccumulation) {
+void manipulateData::transformAllIDsToString(std::list<std::string>& checkAccumulation) {
 
     std::string tmp_2;
     std::vector<int> VectorOfNumbersInId;
