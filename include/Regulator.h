@@ -10,7 +10,6 @@
 #include <thread>
 #include <sensors/ImuSensor.h>
 #include "Subscriber.h"
-#include <boost/thread.hpp>
 
 
 // REF: Inspiration for timer from https://www.boost.org/doc/libs/1_69_0/doc/html/boost_asio/tutorial/tuttimer3/src.html
@@ -39,7 +38,7 @@ namespace apk {
         UltraSonicSensor::ReturnType ultraSonicData = 10_m;
         int regulateRateHZ_;
         bool running_ = false;
-        boost::mutex threadMut_;
+        std::mutex threadMut_;
     };
 
     struct RegulatorFailure : std::exception{

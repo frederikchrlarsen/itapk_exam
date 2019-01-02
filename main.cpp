@@ -391,7 +391,7 @@ void testImuSensor(){
 
     apk::Distributor dist;
 
-    apk::Regulator sub1;
+    apk::Regulator sub1(1);
     sub1.run();
 
     // The sensor interface

@@ -2,8 +2,6 @@
 // Created by Taise on 29/12/2018.
 //
 
-#include <Regulator.h>
-
 #include "Regulator.h"
 
 apk::Regulator::Regulator(int regulateRateHZ) {
@@ -13,12 +11,12 @@ apk::Regulator::Regulator(int regulateRateHZ) {
 
 apk::Regulator::~Regulator() {
     running_ = false;
-    boost::mutex::scoped_lock lock(threadMut_);
+    std::scoped_lock lock(threadMut_);
 }
 
 void apk::Regulator::controlLoop(){
     try {
-        boost::mutex::scoped_lock lock(threadMut_);
+        std::scoped_lock lock(threadMut_);
 
         while (running_) {
             auto start = std::chrono::high_resolution_clock::now();
