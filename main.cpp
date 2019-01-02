@@ -247,16 +247,16 @@ void testDataPlotter(){
     //imu->connect();
 
     // Let the Imu thread run and disconnect after
+    ultraSonicSensorPtr->setSampleRate(apk::UltraSonicSensor::SampleRate::HZ_10);
     std::this_thread::sleep_for(std::chrono::milliseconds(2500));
     dist.connectToSensor(&sub2, imu);
     std::this_thread::sleep_for(std::chrono::milliseconds(2500));
     //dist.removeSubscriber(&sub2);
     //dist.disconnectFromSensor(&sub1, ultraSonicSensor);
     //dist.disconnectFromSensor(&sub1, ultraSonicSensor);
-    ultraSonicSensorPtr->setSampleRate(apk::UltraSonicSensor::SampleRate::HZ_10);
     std::this_thread::sleep_for(std::chrono::milliseconds(2500));
     dist.disconnectSensor(imu);
-    std::this_thread::sleep_for(std::chrono::milliseconds(2500));
+    std::this_thread::sleep_for(std::chrono::milliseconds(2500*7));
 
     //imu->disconnect();
 

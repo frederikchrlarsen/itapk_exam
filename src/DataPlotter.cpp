@@ -92,7 +92,7 @@ void apk::DataPlotter::updateUltraDisplay() const {
     clearConsole();
 
     auto max = *std::max_element(ultraSonicData_.begin(), ultraSonicData_.end());
-    std::array<long double, 20>data(ultraSonicData_);
+    std::array<long double, 50>data(ultraSonicData_);
     std::cout << "Max: " << max << std::endl;
     if(max > 0){
         //Divide each element in the array by max (Normalize)

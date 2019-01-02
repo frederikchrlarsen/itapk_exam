@@ -70,8 +70,8 @@ private:
     std::future<bool> dataGenFuture_;
 
     apk::SensorData<apk::UltraSonicSensor::ReturnType, 10> ultraSonicBuffer_;
-    std::array<long double, 20> ultraSonicData_ = {0};
-    unsigned int ultraSonicDataSize_ = 20;
+    std::array<long double, 50> ultraSonicData_ = {0};
+    unsigned int ultraSonicDataSize_ = 50;
     unsigned int ultraSonicDataPosition_ = 0;
     unsigned int x_, y_ = 30;
 

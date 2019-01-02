@@ -2,6 +2,7 @@
 // Created by frederik on 12/30/18.
 //
 
+#include <cmath>
 #include "sensors/UltraSonicSensor.h"
 
 apk::UltraSonicSensor::UltraSonicSensor():
@@ -45,12 +46,17 @@ void apk::UltraSonicSensor::setDistanceType(apk::UltraSonicSensor::DistanceType 
 }
 
 void apk::UltraSonicSensor::dataGenerator() {
+    auto startTime = std::chrono::high_resolution_clock::now();
     while(running_) {
         std::this_thread::sleep_for(std::chrono::milliseconds(1000)/sampleRate_);
+        auto timeTemp = std::chrono::high_resolution_clock::now() - startTime;
+        auto timeElapsedMs = std::chrono::duration_cast<std::chrono::milliseconds>(timeTemp);
+        double t = timeElapsedMs.count()/1000.0;
+        double fs = 0.3;
         counter = counter + 1_m;
-
+        apk::Length l(std::sin(t*2*M_PI*fs)+1, apk::Length::METER);
         if (isConnected() && signal_ != nullptr) {
-            (*signal_)(counter);
+            (*signal_)(l);
         }
     }
     dataGenPromise_.set_value(true);
