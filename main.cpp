@@ -311,7 +311,7 @@ void testDataPlotter(){
 void testRegulator() {
     apk::Distributor dist;
 
-    apk::Regulator regulator;
+    apk::Regulator regulator(2);
     regulator.run();
 
     std::this_thread::sleep_for(std::chrono::milliseconds(3100));
